@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="5dp"
+    android:layout_margin="10dp"
+
+    >
+<LinearLayout
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    >
+
+    <rubikstudio.library.WheelView
+        android:id="@+id/wheel_view_avatar"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:lkwBackgroundColor="#FF9800"
+        app:lkwCenterImage="@drawable/wheel2"
+        app:lkwTopTextColor="#030304"
+        app:lkwSecondaryTextSize="10dp"
+
+        />
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_wheel_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif"
+            android:hint="Wheel title"
+            android:textColor="#201F1F"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_spin_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:hint="Spins: " />
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:gravity="end"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <ImageView
+
+                android:layout_marginRight="20dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:id="@+id/ic_setting"
+                android:src="@drawable/ic_baseline_settings"
+                />
+
+            <ImageView
+                android:layout_marginRight="10dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:id="@+id/ic_delete"
+                android:src="@drawable/ic_baseline_delete"
+                />
+        </LinearLayout>
+
+
+    </LinearLayout>
+</LinearLayout>
+
+
+
+</androidx.cardview.widget.CardView>
