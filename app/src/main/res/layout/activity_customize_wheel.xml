@@ -1,27 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F3F3F3"
-    android:orientation="vertical"
+
     android:padding="10dp"
     tools:context=".screens.CustomizeWheelActivity">
 
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <EditText
 
-        <EditText
-
-            android:id="@+id/edt_title"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/custom_text_box"
-            android:drawableRight="@drawable/ic_baseline_edit_24"
-            android:hint="Title"
-            android:padding="8dp"
-            android:textSize="25dp"
-            android:textStyle="bold" />
+        android:id="@+id/edt_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/custom_text_box"
+        android:drawableRight="@drawable/ic_edit_pencil"
+        android:hint="Tiêu đề vòng quay"
+        android:padding="8dp"
+        android:textSize="25dp"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -53,8 +56,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:text="Preview"
-                        android:textSize="20dp"
+                        android:text="Xem trước"
+                        android:textSize="18dp"
 
                         />
 
@@ -65,8 +68,10 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_margin="5dp"
                         app:lkwBackgroundColor="#FF9800"
-                        app:lkwCenterImage="@drawable/iccenterwheel"
+                        app:lkwCenterImage="@drawable/ic_center_wheel"
                         app:lkwSecondaryTextSize="8dp"
+                        app:lkwEdgeColor="#FFE500"
+                        app:lkwEdgeWidth="3"
                         app:lkwTopTextColor="#030304" />
 
 
@@ -98,8 +103,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
-                            android:text="Spin time"
-                            android:textSize="20dp"
+                            android:text="Số vòng quay"
+                            android:textSize="18dp"
 
                             />
 
@@ -156,8 +161,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:text="Slices"
-                        android:textSize="20dp"
+                        android:text="Các mục"
+                        android:textSize="18dp"
 
                         />
 
@@ -186,7 +191,23 @@
 
 
     </LinearLayout>
-
-
 </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_delete_wheel"
+        android:text="Xóa vòng quay"
+        android:textColor="#ff0000"
+        android:textSize="18dp"
+        android:layout_margin="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:drawableLeft="@drawable/ic_baseline_delete"
+
+        />
+
+
+
+</RelativeLayout>
 

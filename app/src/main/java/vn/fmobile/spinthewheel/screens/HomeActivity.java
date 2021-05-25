@@ -17,7 +17,7 @@ import java.util.List;
 import rubikstudio.library.WheelView;
 import rubikstudio.library.model.WheelItem;
 import vn.fmobile.spinthewheel.R;
-import vn.fmobile.spinthewheel.WheelApdapter;
+import vn.fmobile.spinthewheel.adapter.WheelApdapter;
 import vn.fmobile.spinthewheel.database.WheelDatabase;
 import vn.fmobile.spinthewheel.model.Wheel;
 
@@ -78,7 +78,7 @@ public class HomeActivity extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(HomeActivity.this, SpinActivity.class));
+                startActivity(new Intent(HomeActivity.this, AddWheelActivity.class));
             }
         });
 

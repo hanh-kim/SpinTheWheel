@@ -3,10 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:ignore="MissingDefaultResource">
+
+    <item
+        android:id="@+id/item_history"
+        android:icon="@drawable/ic_baseline_watch"
+        android:title="Lịch sử"
+        app:showAsAction="always"
+        />
+
     <item
         android:id="@+id/item_customize"
         android:icon="@drawable/ic_white_settings"
-        android:title="Setting"
+        android:title="Chỉnh sửa"
         app:showAsAction="always"
         />
 </menu>

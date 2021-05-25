@@ -1,4 +1,4 @@
-package vn.fmobile.spinthewheel;
+package vn.fmobile.spinthewheel.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +14,7 @@ import java.util.List;
 
 import rubikstudio.library.WheelView;
 import rubikstudio.library.model.WheelItem;
+import vn.fmobile.spinthewheel.R;
 import vn.fmobile.spinthewheel.model.Wheel;
 
 public class WheelApdapter extends RecyclerView.Adapter<WheelApdapter.WheelViewHolder>{

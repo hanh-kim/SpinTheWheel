@@ -24,7 +24,7 @@ import vn.fmobile.spinthewheel.model.LuckyItem;
 
 public class SpinActivity extends AppCompatActivity {
 
-    TextView tvResult;
+    TextView tvResult, tvWheelTitle;
     Button btnSpin;
     WheelView wheelView;
     ImageView iccenter;
@@ -38,9 +38,10 @@ public class SpinActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spin);
         initUI();
+        tvWheelTitle.setText("Còn cái nịt!");
 
 
-        for (int i=0; i<30; i++){
+        for (int i=0; i<20; i++){
             WheelItem item = new WheelItem();
             if(i%2==0){
                 //item.title = "hanh"+(i+1);
@@ -59,8 +60,9 @@ public class SpinActivity extends AppCompatActivity {
         }
 
 
+
         wheelView.setData(wheelItemList);
-        wheelView.setRound(5);
+        wheelView.setRound(3);
 
         /*wheelView.setLuckyWheelBackgrouldColor(0xff0000ff);
         wheelView.setLuckyWheelTextColor(0xffcc0000);
@@ -76,6 +78,15 @@ public class SpinActivity extends AppCompatActivity {
         });
 
         iccenter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int index = getRandomIndex();
+
+                wheelView.startWheelWithTargetIndex(index);
+            }
+        });
+
+        wheelView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int index = getRandomIndex();
@@ -103,6 +114,7 @@ public class SpinActivity extends AppCompatActivity {
 
     private void initUI() {
         tvResult = findViewById(R.id.tv_result);
+        tvWheelTitle = findViewById(R.id.tv_wheel_title);
         btnSpin = findViewById(R.id.btn_spin);
         wheelView = findViewById(R.id.wheel_view);
         wheelItemList = new ArrayList<>();
@@ -122,6 +134,9 @@ public class SpinActivity extends AppCompatActivity {
 
         if (itemId == R.id.item_customize){
             startActivity(new Intent(SpinActivity.this, CustomizeWheelActivity.class));
+
+        }else if (itemId == R.id.item_history){
+            startActivity(new Intent(SpinActivity.this, HistoryActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

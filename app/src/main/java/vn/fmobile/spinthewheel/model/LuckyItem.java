@@ -16,7 +16,7 @@ public class LuckyItem{
     public int icon;
     public int backgroundColor;
     public int textColor;
-    public int round;
+
 
     public LuckyItem() {
         super();

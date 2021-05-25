@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,16 +24,16 @@ import com.google.android.material.slider.Slider;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.Inflater;
 
 import petrov.kristiyan.colorpicker.ColorPicker;
 import rubikstudio.library.WheelView;
 import rubikstudio.library.model.WheelItem;
 import vn.fmobile.spinthewheel.R;
 
-public class CustomizeWheelActivity extends AppCompatActivity {
-
+public class AddWheelActivity extends AppCompatActivity implements View.OnClickListener {
     Slider sliderRound;
-    TextView tvCountSpinTimes, tvDelete;
+    TextView tvCountSpinTimes, tvCancel;
     List<WheelItem> wheelItemList;
     WheelView wheelView;
     ImageView icAdd;
@@ -40,19 +41,23 @@ public class CustomizeWheelActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_customize_wheel);
+        setContentView(R.layout.activity_add_wheel);
+
         initUI();
 
-        for (int i=0; i<30; i++){
+        icAdd.setOnClickListener(this::onClick);
+
+
+        for (int i = 0; i < 30; i++) {
             WheelItem item = new WheelItem();
-            if(i%2==0){
+            if (i % 2 == 0) {
                 //item.title = "hanh"+(i+1);
-                item.secondaryText="hanhkkkk"+(i+1);
+                item.secondaryText = "hanhkkkk" + (i + 1);
                 item.backgroundColor = Color.RED;
                 item.textColor = Color.BLACK;
-            }else {
+            } else {
                 // item.title = "canh"+(i+1);
-                item.secondaryText="c"+(i+1);
+                item.secondaryText = "c" + (i + 1);
                 item.backgroundColor = Color.GREEN;
                 item.textColor = Color.BLACK;
             }
@@ -65,67 +70,22 @@ public class CustomizeWheelActivity extends AppCompatActivity {
 
         sliderRound.addOnChangeListener(new Slider.OnChangeListener() {
             @Override
-            public void onValueChange(@NonNull  Slider slider, float value, boolean fromUser) {
-                tvCountSpinTimes.setText((int)value+"x");
+            public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
+                tvCountSpinTimes.setText((int) value + "x");
             }
         });
 
-        icAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAddDialog();
-            }
-        });
-        
-        tvDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(CustomizeWheelActivity.this, "Deleting", Toast.LENGTH_SHORT).show();
-            }
-        });
+        tvCancel.setOnClickListener(this::onClick);
 
-
-    }
-
-    private void initUI(){
-       wheelView = findViewById(R.id.wv_preview);
-       icAdd = findViewById(R.id.ic_add_item);
-       sliderRound = findViewById(R.id.slider_spin_times);
-       tvCountSpinTimes = findViewById(R.id.tv_set_round);
-       tvDelete = findViewById(R.id.tv_delete_wheel);
-
-        wheelItemList = new ArrayList<>();
-
-
-
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.custom_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int itemId = item.getItemId();
-
-        if (itemId == R.id.item_done){
-            startActivity(new Intent(CustomizeWheelActivity.this, SpinActivity.class));
-            this.finish();
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private int chooseColor() {
         final int[] mColor = {0};
-        ColorPicker colorPicker = new ColorPicker(CustomizeWheelActivity.this);
+        ColorPicker colorPicker = new ColorPicker(AddWheelActivity.this);
         colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
             @Override
             public void onChooseColor(int position, int color) {
                 mColor[0] = color;
-
 
             }
 
@@ -137,7 +97,7 @@ public class CustomizeWheelActivity extends AppCompatActivity {
             @Override
             public void onClick(View v, int position, int color) {
                 mColor[0]=color;
-                Toast.makeText(CustomizeWheelActivity.this, color+"", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddWheelActivity.this, color+"", Toast.LENGTH_SHORT).show();
                 colorPicker.dismissDialog();
 
 
@@ -155,6 +115,46 @@ public class CustomizeWheelActivity extends AppCompatActivity {
 
     }
 
+    private void initUI() {
+        wheelView = findViewById(R.id.wv_preview);
+        icAdd = findViewById(R.id.ic_add_item);
+        sliderRound = findViewById(R.id.slider_spin_times);
+        tvCountSpinTimes = findViewById(R.id.tv_set_round);
+        tvCancel = findViewById(R.id.tv_cancel);
+
+        wheelItemList = new ArrayList<>();
+        sliderRound.setValue((float) 5.0);
+        tvCountSpinTimes.setText((int) sliderRound.getValue() + "x");
+
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.custom_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+
+        if (itemId == R.id.item_done) {
+            startActivity(new Intent(AddWheelActivity.this, SpinActivity.class));
+            this.finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v== icAdd) {
+            showAddDialog();
+        }else if (v == tvCancel){
+            finish();
+        }
+    }
+
     private void showAddDialog() {
         CardView cvBgPre, cvSetTextColor, cvSetBgColor;
         TextView tvNamePre;
@@ -163,8 +163,8 @@ public class CustomizeWheelActivity extends AppCompatActivity {
         Button btnSave, btnCancel, btnDelete;
 
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(CustomizeWheelActivity.this);
-        View view = getLayoutInflater().inflate(R.layout.layput_dialog_reset_item,null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(AddWheelActivity.this);
+        View view = getLayoutInflater().inflate(R.layout.layout_dialog_add_item,null);
 
         cvBgPre = view.findViewById(R.id.card_preview_bg_item);
         cvSetBgColor = view.findViewById(R.id.card_set_bg_color);
@@ -173,7 +173,6 @@ public class CustomizeWheelActivity extends AppCompatActivity {
         edtName = view.findViewById(R.id.edt_item_name);
         btnCancel = view.findViewById(R.id.btn_cancel);
         btnSave = view.findViewById(R.id.btn_save);
-        btnDelete = view.findViewById(R.id.btn_delete);
         builder.setView(view);
         builder.setCancelable(false);
         AlertDialog  alertDialog = builder.create();
@@ -198,7 +197,7 @@ public class CustomizeWheelActivity extends AppCompatActivity {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                alertDialog.cancel();
+               alertDialog.cancel();
             }
         });
 
@@ -222,6 +221,6 @@ public class CustomizeWheelActivity extends AppCompatActivity {
 
 
 
-        alertDialog.show();
+       alertDialog.show();
     }
 }
