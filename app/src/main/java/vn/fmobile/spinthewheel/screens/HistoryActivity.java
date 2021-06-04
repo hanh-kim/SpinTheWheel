@@ -8,20 +8,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import vn.fmobile.spinthewheel.CurrentDateTime;
+import vn.fmobile.spinthewheel.others.CurrentDateTime;
 import vn.fmobile.spinthewheel.R;
 import vn.fmobile.spinthewheel.adapter.HistoryAdapter;
 import vn.fmobile.spinthewheel.model.History;

@@ -1,4 +1,4 @@
-package vn.fmobile.spinthewheel;
+package vn.fmobile.spinthewheel.others;
 
 import android.view.View;
 

@@ -6,19 +6,19 @@ import androidx.room.PrimaryKey;
 import rubikstudio.library.model.WheelItem;
 
 @Entity(tableName = "WHEEL_ITEM")
-public class LuckyItem{
+public class Item {
 
     @PrimaryKey(autoGenerate = true)
     public int id;
     public int wheelId;
     public String title;
-    public String secondaryText;
+    public String secondaryTitle;
     public int icon;
     public int backgroundColor;
     public int textColor;
 
 
-    public LuckyItem() {
+    public Item() {
         super();
     }
 }

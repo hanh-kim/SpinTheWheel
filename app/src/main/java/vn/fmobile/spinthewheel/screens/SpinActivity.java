@@ -20,7 +20,6 @@ import java.util.Random;
 import rubikstudio.library.WheelView;
 import rubikstudio.library.model.WheelItem;
 import vn.fmobile.spinthewheel.R;
-import vn.fmobile.spinthewheel.model.LuckyItem;
 
 public class SpinActivity extends AppCompatActivity {
 

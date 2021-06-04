@@ -16,6 +16,7 @@ import rubikstudio.library.WheelView;
 import rubikstudio.library.model.WheelItem;
 import vn.fmobile.spinthewheel.R;
 import vn.fmobile.spinthewheel.model.Wheel;
+import vn.fmobile.spinthewheel.others.OnItemClickListener;
 
 public class WheelApdapter extends RecyclerView.Adapter<WheelApdapter.WheelViewHolder>{
     List<Wheel> wheelList;
@@ -39,9 +40,9 @@ public class WheelApdapter extends RecyclerView.Adapter<WheelApdapter.WheelViewH
         void onSettingListener(Wheel wheel,int position);
         void onDeleteListener(Wheel wheel,int position);
     }
-    public interface OnItemClickListener {
-        void onItemClick(View view, int position);
-    }
+//    public interface OnItemClickListener {
+//        void onItemClick(View view, int position);
+//    }
 
 
 

@@ -27,7 +27,7 @@ import java.util.List;
 import petrov.kristiyan.colorpicker.ColorPicker;
 import rubikstudio.library.WheelView;
 import rubikstudio.library.model.WheelItem;
-import vn.fmobile.spinthewheel.OnChangeColor;
+import vn.fmobile.spinthewheel.others.OnChangeColor;
 import vn.fmobile.spinthewheel.R;
 
 public class CustomizeWheelActivity extends AppCompatActivity {
@@ -161,7 +161,7 @@ public class CustomizeWheelActivity extends AppCompatActivity {
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(CustomizeWheelActivity.this);
-        View view = getLayoutInflater().inflate(R.layout.layput_dialog_reset_item,null);
+        View view = getLayoutInflater().inflate(R.layout.layout_dialog_reset_item,null);
 
         cvBgPre = view.findViewById(R.id.card_preview_bg_item);
         cvSetBgColor = view.findViewById(R.id.card_set_bg_color);

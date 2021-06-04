@@ -20,6 +20,7 @@ import vn.fmobile.spinthewheel.R;
 import vn.fmobile.spinthewheel.adapter.WheelApdapter;
 import vn.fmobile.spinthewheel.database.WheelDatabase;
 import vn.fmobile.spinthewheel.model.Wheel;
+import vn.fmobile.spinthewheel.others.OnItemClickListener;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -64,7 +65,7 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         wheelApdapter.setData(wheelList, wheelItemList);
-        wheelApdapter.setOnItemClickListener(new WheelApdapter.OnItemClickListener() {
+        wheelApdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 startActivity(new Intent(HomeActivity.this, SpinActivity.class));

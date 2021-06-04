@@ -38,8 +38,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:padding="7dp"
                 android:gravity="center"
+                android:padding="7dp"
                 android:text="Hanh"
                 android:textStyle="bold" />
 

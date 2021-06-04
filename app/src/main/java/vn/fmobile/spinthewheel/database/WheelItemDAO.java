@@ -7,20 +7,20 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import vn.fmobile.spinthewheel.model.LuckyItem;
+import vn.fmobile.spinthewheel.model.Item;
 
 @Dao
 public interface WheelItemDAO {
 
-    @Query("SELECT * FROM WHEEL_ITEM")
-    List<LuckyItem> getAllItemFromDatabase();
+    @Query("SELECT * FROM Item")
+    List<Item> getAllItemFromDatabase();
 
-    @Query("DELETE FROM WHEEL_ITEM")
+    @Query("DELETE FROM Item")
     void deleteAllItemInDatabase();
 
     @Insert
-    void insertItemToDatabase(LuckyItem item);
+    void insertItemToDatabase(Item item);
 
     @Delete
-    void deleteItemInDatabase(LuckyItem item);
+    void deleteItemInDatabase(Item item);
 }

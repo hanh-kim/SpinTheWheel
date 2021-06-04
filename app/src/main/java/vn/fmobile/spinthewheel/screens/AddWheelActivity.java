@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -16,7 +18,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,31 +25,59 @@ import com.google.android.material.slider.Slider;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 import petrov.kristiyan.colorpicker.ColorPicker;
 import rubikstudio.library.WheelView;
 import rubikstudio.library.model.WheelItem;
-import vn.fmobile.spinthewheel.OnChangeColor;
+import vn.fmobile.spinthewheel.adapter.ItemPreviewAdapter;
+import vn.fmobile.spinthewheel.model.Item;
+import vn.fmobile.spinthewheel.others.OnChangeColor;
 import vn.fmobile.spinthewheel.R;
+import vn.fmobile.spinthewheel.others.OnItemClickListener;
 
 public class AddWheelActivity extends AppCompatActivity implements View.OnClickListener {
     Slider sliderRound;
     TextView tvCountSpinTimes, tvCancel;
     List<WheelItem> wheelItemList;
+    List<Item> itemList;
     WheelView wheelView;
     ImageView icAdd;
+    RecyclerView rcvItem;
+    ItemPreviewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_wheel);
 
+        // initialize views
         initUI();
 
+        // action on click to view
         icAdd.setOnClickListener(this::onClick);
+        tvCancel.setOnClickListener(this::onClick);
+
+        // data item preview
+        for (int i = 0; i < 10; i++) {
+            Item item = new Item();
+            if (i % 2 == 0) {
+                //item.title = "hanh"+(i+1);
+                item.title = "hanh " + (i + 1);
+                item.backgroundColor = Color.RED;
+                item.textColor = Color.BLACK;
+            } else {
+                // item.title = "canh"+(i+1);
+                item.title = "kim " + (i + 1);
+                item.backgroundColor = Color.GREEN;
+                item.textColor = Color.BLACK;
+            }
+
+            itemList.add(item);
+
+        }
 
 
+        // data wheel preview
         for (int i = 0; i < 30; i++) {
             WheelItem item = new WheelItem();
             if (i % 2 == 0) {
@@ -67,8 +96,10 @@ public class AddWheelActivity extends AppCompatActivity implements View.OnClickL
 
         }
 
+        // set data for wheel
         wheelView.setData(wheelItemList);
 
+        // on change the round number
         sliderRound.addOnChangeListener(new Slider.OnChangeListener() {
             @Override
             public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
@@ -76,17 +107,31 @@ public class AddWheelActivity extends AppCompatActivity implements View.OnClickL
             }
         });
 
-        tvCancel.setOnClickListener(this::onClick);
+
+        // show list item
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(AddWheelActivity.this);
+        rcvItem.setLayoutManager(linearLayoutManager);
+
+        adapter.setData(itemList, new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                showCustomizeDialog(position);
+
+            }
+        });
+
+        rcvItem.setAdapter(adapter);
+
 
     }
 
-    private void  chooseColor(OnChangeColor changeColor) {
+    private void chooseColor(OnChangeColor changeColor) {
 
         ColorPicker colorPicker = new ColorPicker(AddWheelActivity.this);
         colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
             @Override
             public void onChooseColor(int position, int color) {
-              //  colorPicker.dismissDialog();
+                //  colorPicker.dismissDialog();
             }
 
             @Override
@@ -110,7 +155,6 @@ public class AddWheelActivity extends AppCompatActivity implements View.OnClickL
                 .show();
 
 
-
     }
 
     private void initUI() {
@@ -119,6 +163,10 @@ public class AddWheelActivity extends AppCompatActivity implements View.OnClickL
         sliderRound = findViewById(R.id.slider_spin_times);
         tvCountSpinTimes = findViewById(R.id.tv_set_round);
         tvCancel = findViewById(R.id.tv_cancel);
+        rcvItem = findViewById(R.id.rcv_pre_item);
+        adapter = new ItemPreviewAdapter();
+
+        itemList = new ArrayList<>();
 
         wheelItemList = new ArrayList<>();
         sliderRound.setValue((float) 5.0);
@@ -146,9 +194,9 @@ public class AddWheelActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        if (v== icAdd) {
+        if (v == icAdd) {
             showAddDialog();
-        }else if (v == tvCancel){
+        } else if (v == tvCancel) {
             finish();
         }
     }
@@ -162,7 +210,7 @@ public class AddWheelActivity extends AppCompatActivity implements View.OnClickL
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(AddWheelActivity.this);
-        View view = getLayoutInflater().inflate(R.layout.layout_dialog_add_item,null);
+        View view = getLayoutInflater().inflate(R.layout.layout_dialog_add_item, null);
 
         cvBgPre = view.findViewById(R.id.card_preview_bg_item);
         cvSetBgColor = view.findViewById(R.id.card_set_bg_color);
@@ -173,7 +221,7 @@ public class AddWheelActivity extends AppCompatActivity implements View.OnClickL
         btnSave = view.findViewById(R.id.btn_save);
         builder.setView(view);
         builder.setCancelable(false);
-        AlertDialog  alertDialog = builder.create();
+        AlertDialog alertDialog = builder.create();
 
         edtName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -195,34 +243,34 @@ public class AddWheelActivity extends AppCompatActivity implements View.OnClickL
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               alertDialog.cancel();
+                alertDialog.cancel();
             }
         });
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               alertDialog.cancel();
+                alertDialog.cancel();
             }
         });
 
         cvSetBgColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               chooseColor(new OnChangeColor() {
-                   @Override
-                   public void setBackgroundColor(int color) {
-                       String col = "#"+Integer.toHexString(color);
-                       cvSetBgColor.setBackgroundColor(Color.parseColor(col));
-                       cvBgPre.setBackgroundColor(Color.parseColor(col));
-                   }
+                chooseColor(new OnChangeColor() {
+                    @Override
+                    public void setBackgroundColor(int color) {
+                        String col = "#" + Integer.toHexString(color);
+                        cvSetBgColor.setBackgroundColor(Color.parseColor(col));
+                        cvBgPre.setBackgroundColor(Color.parseColor(col));
+                    }
 
-                   @Override
-                   public void setTextColor(int color) {
+                    @Override
+                    public void setTextColor(int color) {
 
-                   }
-               });
-                
+                    }
+                });
+
             }
         });
 
@@ -232,22 +280,144 @@ public class AddWheelActivity extends AppCompatActivity implements View.OnClickL
                 chooseColor(new OnChangeColor() {
                     @Override
                     public void setBackgroundColor(int color) {
-                        String col = "#"+Integer.toHexString(color);
+                        String col = "#" + Integer.toHexString(color);
                         cvSetTextColor.setBackgroundColor(Color.parseColor(col));
 
                     }
 
                     @Override
                     public void setTextColor(int color) {
-                        String col = "#"+Integer.toHexString(color);
+                        String col = "#" + Integer.toHexString(color);
                         tvNamePre.setTextColor(Color.parseColor(col));
                     }
                 });
             }
         });
 
-       alertDialog.show();
+        alertDialog.show();
     }
 
+    private void showCustomizeDialog(int position) {
+
+        Item item = itemList.get(position);
+        CardView cvBgPre, cvSetTextColor, cvSetBgColor;
+        TextView tvNamePre;
+        EditText edtName;
+
+        Button btnSave, btnCancel, btnDelete;
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(AddWheelActivity.this);
+        View view = getLayoutInflater().inflate(R.layout.layout_dialog_reset_item, null);
+
+        cvBgPre = view.findViewById(R.id.card_preview_bg_item);
+        cvSetBgColor = view.findViewById(R.id.card_set_bg_color);
+        tvNamePre = view.findViewById(R.id.tv_preview_name_item);
+        cvSetTextColor = view.findViewById(R.id.card_set_text_color);
+        edtName = view.findViewById(R.id.edt_item_name);
+        btnCancel = view.findViewById(R.id.btn_cancel);
+        btnSave = view.findViewById(R.id.btn_save);
+        btnDelete = view.findViewById(R.id.btn_delete);
+        builder.setView(view);
+        builder.setCancelable(false);
+        AlertDialog alertDialog = builder.create();
+
+        // setup data
+        edtName.setText(item.title);
+        tvNamePre.setText(item.title);
+        tvNamePre.setTextColor(item.textColor);
+        cvBgPre.setBackgroundColor(item.backgroundColor);
+        cvSetTextColor.setBackgroundColor(item.textColor);
+        cvSetBgColor.setBackgroundColor(item.backgroundColor);
+
+
+
+        // Set title
+        edtName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tvNamePre.setText(s.toString().trim());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
+        // btn on click listener
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.cancel();
+            }
+        });
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(AddWheelActivity.this, "Add item successfully!", Toast.LENGTH_SHORT).show();
+                alertDialog.cancel();
+            }
+        });
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(AddWheelActivity.this, "Delete item successfuly!", Toast.LENGTH_SHORT).show();
+                alertDialog.cancel();
+            }
+        });
+
+        //..........
+
+        cvSetBgColor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseColor(new OnChangeColor() {
+                    @Override
+                    public void setBackgroundColor(int color) {
+                        String col = "#" + Integer.toHexString(color);
+                        cvSetBgColor.setBackgroundColor(Color.parseColor(col));
+                        cvBgPre.setBackgroundColor(Color.parseColor(col));
+                    }
+
+                    @Override
+                    public void setTextColor(int color) {
+
+                    }
+                });
+
+            }
+        });
+
+        cvSetTextColor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseColor(new OnChangeColor() {
+                    @Override
+                    public void setBackgroundColor(int color) {
+                        String col = "#" + Integer.toHexString(color);
+                        cvSetTextColor.setBackgroundColor(Color.parseColor(col));
+
+                    }
+
+                    @Override
+                    public void setTextColor(int color) {
+                        String col = "#" + Integer.toHexString(color);
+                        tvNamePre.setTextColor(Color.parseColor(col));
+                    }
+                });
+            }
+        });
+
+        alertDialog.show();
+    }
 
 }
