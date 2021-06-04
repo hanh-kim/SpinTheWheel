@@ -27,6 +27,7 @@ import java.util.List;
 import petrov.kristiyan.colorpicker.ColorPicker;
 import rubikstudio.library.WheelView;
 import rubikstudio.library.model.WheelItem;
+import vn.fmobile.spinthewheel.OnChangeColor;
 import vn.fmobile.spinthewheel.R;
 
 public class CustomizeWheelActivity extends AppCompatActivity {
@@ -118,14 +119,12 @@ public class CustomizeWheelActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private int chooseColor() {
-        final int[] mColor = {0};
+    private void  chooseColor(OnChangeColor changeColor) {
+
         ColorPicker colorPicker = new ColorPicker(CustomizeWheelActivity.this);
         colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
             @Override
             public void onChooseColor(int position, int color) {
-                mColor[0] = color;
-
 
             }
 
@@ -136,10 +135,9 @@ public class CustomizeWheelActivity extends AppCompatActivity {
         }).addListenerButton("Ok", new ColorPicker.OnButtonListener() {
             @Override
             public void onClick(View v, int position, int color) {
-                mColor[0]=color;
-                Toast.makeText(CustomizeWheelActivity.this, color+"", Toast.LENGTH_SHORT).show();
+                changeColor.setBackgroundColor(color);
+                changeColor.setTextColor(color);
                 colorPicker.dismissDialog();
-
 
             }
         }).disableDefaultButtons(true)
@@ -151,7 +149,6 @@ public class CustomizeWheelActivity extends AppCompatActivity {
                 .show();
 
 
-        return mColor[0];
 
     }
 
@@ -205,18 +202,40 @@ public class CustomizeWheelActivity extends AppCompatActivity {
         cvSetBgColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int color = chooseColor();
-                cvBgPre.setBackgroundColor(color);
-                cvSetBgColor.setBackgroundColor(color);
+                chooseColor(new OnChangeColor() {
+                    @Override
+                    public void setBackgroundColor(int color) {
+                        String col = "#"+Integer.toHexString(color);
+                        cvSetBgColor.setBackgroundColor(Color.parseColor(col));
+                        cvBgPre.setBackgroundColor(Color.parseColor(col));
+                    }
+
+                    @Override
+                    public void setTextColor(int color) {
+
+                    }
+                });
+
             }
         });
 
         cvSetTextColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int color = chooseColor();
-                cvSetTextColor.setBackgroundColor(Color.RED);
-                tvNamePre.setTextColor(color);
+                chooseColor(new OnChangeColor() {
+                    @Override
+                    public void setBackgroundColor(int color) {
+                        String col = "#"+Integer.toHexString(color);
+                        cvSetTextColor.setBackgroundColor(Color.parseColor(col));
+
+                    }
+
+                    @Override
+                    public void setTextColor(int color) {
+                        String col = "#"+Integer.toHexString(color);
+                        tvNamePre.setTextColor(Color.parseColor(col));
+                    }
+                });
             }
         });
 

@@ -7,10 +7,11 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import vn.fmobile.spinthewheel.model.History;
 import vn.fmobile.spinthewheel.model.LuckyItem;
 import vn.fmobile.spinthewheel.model.Wheel;
 
-@Database(entities = {LuckyItem.class,Wheel.class},version = 1)
+@Database(entities = {LuckyItem.class,Wheel.class, History.class},version = 1)
 public abstract class WheelDatabase extends RoomDatabase {
     private static final String DATABASE_NAME = "lucky_wheel.db";
     private static WheelDatabase instance;
@@ -23,8 +24,13 @@ public abstract class WheelDatabase extends RoomDatabase {
         }
         return instance;
     }
+    public HistoryDAO historyDAO;
 
     public abstract WheelDAO wheelDAO();
 
     public abstract WheelItemDAO wheelItemDAO();
+
+
+
+
 }

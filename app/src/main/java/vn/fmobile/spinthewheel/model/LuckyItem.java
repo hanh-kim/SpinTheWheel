@@ -10,7 +10,7 @@ public class LuckyItem{
 
     @PrimaryKey(autoGenerate = true)
     public int id;
-    public int idWheel;
+    public int wheelId;
     public String title;
     public String secondaryText;
     public int icon;
