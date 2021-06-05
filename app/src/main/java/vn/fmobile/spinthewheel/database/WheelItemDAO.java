@@ -12,10 +12,10 @@ import vn.fmobile.spinthewheel.model.Item;
 @Dao
 public interface WheelItemDAO {
 
-    @Query("SELECT * FROM Item")
+    @Query("SELECT * FROM WHEEL_ITEM")
     List<Item> getAllItemFromDatabase();
 
-    @Query("DELETE FROM Item")
+    @Query("DELETE FROM WHEEL_ITEM")
     void deleteAllItemInDatabase();
 
     @Insert

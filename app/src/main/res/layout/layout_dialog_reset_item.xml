@@ -1,132 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="20dp">
+    android:layout_height="wrap_content">
 
-    <androidx.cardview.widget.CardView
-        android:layout_gravity="center"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="8dp"
+        android:orientation="vertical">
 
-        >
-
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:background="#E8E6E6"
+            android:padding="5dp"
+            android:text="Chỉnh thông tin"
+            android:textStyle="bold"
+            android:textColor="#3F51B5"
+            android:textSize="25dp" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_preview_bg_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="25dp"
+            app:cardBackgroundColor="#F84D4D"
+
+            app:cardCornerRadius="5dp">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#E8E6E6"
-                android:padding="5dp"
-                android:text="Chỉnh thông tin"
-                android:textColor="@color/black"
-                android:textSize="20dp" />
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card_preview_bg_item"
-                app:cardBackgroundColor="#F84D4D"
-                android:layout_margin="25dp"
-                android:layout_width="match_parent"
+                android:id="@+id/tv_preview_name_item"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:layout_margin="10dp"
+                android:hint="Tên mục"
+                android:textColor="#870202"
+                android:textSize="18dp"
+                android:textStyle="bold" />
 
-                app:cardCornerRadius="5dp">
+        </androidx.cardview.widget.CardView>
 
-                <TextView
-                    android:id="@+id/tv_preview_name_item"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:hint="Tên mục"
-                    android:textStyle="bold"
-                    android:textColor="#870202"
-                    android:textSize="18dp" />
+        <EditText
+            android:id="@+id/edt_item_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/custom_text_box"
+            android:drawableRight="@drawable/ic_edit_pencil"
+            android:drawablePadding="5dp"
+            android:hint="Tên  mục"
+            android:padding="5dp"
+            android:textSize="20dp" />
 
-            </androidx.cardview.widget.CardView>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/custom_text_box"
+            android:padding="5dp">
 
-            <EditText
-                android:id="@+id/edt_item_name"
-                android:textSize="20dp"
-                android:hint="Tên  mục"
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/custom_text_box"
-                android:layout_margin="5dp"
-                android:drawableRight="@drawable/ic_edit_pencil"
-                android:drawablePadding="5dp"
-                android:padding="5dp" />
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_horizontal"
+                android:hint="Tên mục"
+                android:text="Màu chữ"
+                android:textSize="18dp"
+                android:textStyle="bold" />
 
-            <RelativeLayout
-                android:padding="5dp"
-                android:layout_margin="5dp"
-                android:layout_width="match_parent"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_set_text_color"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center_horizontal"
+                app:cardBackgroundColor="#870202"
+
+                />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/custom_text_box"
+            android:padding="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/custom_text_box">
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_horizontal"
+                android:hint="Tên mục"
+                android:text="Màu nền"
+                android:textSize="18dp"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="Tên mục"
-                    android:textStyle="bold"
-                    android:text="Màu chữ"
-                    android:textSize="18dp"
-                    android:layout_alignParentLeft="true" />
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/card_set_text_color"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
-                    app:cardBackgroundColor="#870202"
-
-                    />
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_set_bg_color"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center_horizontal"
+                app:cardBackgroundColor="#F84D4D" />
 
 
-            </RelativeLayout>
+        </RelativeLayout>
 
-            <RelativeLayout
-                android:padding="5dp"
-                android:layout_margin="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/custom_text_box">
+        <include layout="@layout/layout_button_2" />
 
-                <TextView
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="Tên mục"
-                    android:textStyle="bold"
-                    android:text="Màu nền"
-                    android:textSize="18dp"
-                    android:layout_alignParentLeft="true" />
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/card_set_bg_color"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
-                    app:cardBackgroundColor="#F84D4D"
-                    />
+    </LinearLayout>
 
 
-            </RelativeLayout>
-
-            <include layout="@layout/layout_button_2" />
-
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-
-</FrameLayout>
+</androidx.cardview.widget.CardView>

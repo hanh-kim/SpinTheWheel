@@ -42,7 +42,7 @@ public class ItemPreviewAdapter extends RecyclerView.Adapter<ItemPreviewAdapter.
     @Override
     public void onBindViewHolder(@NonNull ItemPreviewAdapter.ItemViewHolder holder, int position) {
         // set title
-        holder.tvItem.setText(itemList.get(position).secondaryTitle);
+        holder.tvItem.setText(itemList.get(position).title);
 
         // set background color
         holder.tvItem.setBackgroundColor(itemList.get(position).backgroundColor);

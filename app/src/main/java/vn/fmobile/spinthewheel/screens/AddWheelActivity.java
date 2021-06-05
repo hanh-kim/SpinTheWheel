@@ -59,7 +59,7 @@ public class AddWheelActivity extends AppCompatActivity implements View.OnClickL
         tvCancel.setOnClickListener(this::onClick);
 
         // data item preview
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 20; i++) {
             Item item = new Item();
             if (i % 2 == 0) {
                 //item.title = "hanh"+(i+1);
@@ -142,13 +142,17 @@ public class AddWheelActivity extends AppCompatActivity implements View.OnClickL
         }).addListenerButton("Chọn", new ColorPicker.OnButtonListener() {
             @Override
             public void onClick(View v, int position, int color) {
+                if (color==0){
+                    Toast.makeText(AddWheelActivity.this, "Bạn chưa trọn màu", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 changeColor.setBackgroundColor(color);
                 changeColor.setTextColor(color);
                 colorPicker.dismissDialog();
 
             }
         }).disableDefaultButtons(true)
-                .setDefaultColorButton(Color.parseColor("#f84c44"))
+              //  .setDefaultColorButton(Color.parseColor("#f84c44"))
                 .setColumns(5)
                 .setTitle("Chọn màu")
                 .setRoundColorButton(true)
