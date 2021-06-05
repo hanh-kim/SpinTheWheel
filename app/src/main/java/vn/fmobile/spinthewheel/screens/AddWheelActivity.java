@@ -39,9 +39,10 @@ public class AddWheelActivity extends AppCompatActivity implements View.OnClickL
     Slider sliderRound;
     TextView tvCountSpinTimes, tvCancel;
     List<WheelItem> wheelItemList;
-    List<Item> itemList;
+
     WheelView wheelView;
     ImageView icAdd;
+    List<Item> itemList;
     RecyclerView rcvItem;
     ItemPreviewAdapter adapter;
 
@@ -165,7 +166,6 @@ public class AddWheelActivity extends AppCompatActivity implements View.OnClickL
         tvCancel = findViewById(R.id.tv_cancel);
         rcvItem = findViewById(R.id.rcv_pre_item);
         adapter = new ItemPreviewAdapter();
-
         itemList = new ArrayList<>();
 
         wheelItemList = new ArrayList<>();

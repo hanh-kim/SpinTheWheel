@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import vn.fmobile.spinthewheel.others.CurrentDateTime;
 import vn.fmobile.spinthewheel.R;
 import vn.fmobile.spinthewheel.adapter.HistoryAdapter;
 import vn.fmobile.spinthewheel.model.History;
+import vn.fmobile.spinthewheel.others.OnItemClickListener;
 
 public class HistoryActivity extends AppCompatActivity {
 
@@ -28,22 +30,30 @@ public class HistoryActivity extends AppCompatActivity {
     RecyclerView rcvHistory;
     HistoryAdapter adapter;
     List<History> historyList;
+    LinearLayoutManager linearLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
         initUI();
-        historyList.add(new History(1,"Hanh",Color.GREEN,Color.BLACK,
-                CurrentDateTime.getCurrentDate()+" "+CurrentDateTime.getCurrentTime()));
-        historyList.add(new History(2,"Canh",Color.RED,Color.BLACK,
-                CurrentDateTime.getCurrentDate()+" "+CurrentDateTime.getCurrentTime()));
-        historyList.add(new History(3,"Nhat",Color.YELLOW,Color.BLACK,
-                CurrentDateTime.getCurrentDate()+" "+CurrentDateTime.getCurrentTime()));
-        historyList.add(new History(4,"Dang",Color.GREEN,Color.BLACK,
-                CurrentDateTime.getCurrentDate()+" "+CurrentDateTime.getCurrentTime()));
-        adapter.setData(historyList);
-        LinearLayoutManager  linearLayoutManager = new LinearLayoutManager(this);
+        historyList.add(new History(1, "Hanh", Color.GREEN, Color.BLACK,
+                CurrentDateTime.getCurrentDate() + " " + CurrentDateTime.getCurrentTime()));
+        historyList.add(new History(2, "Canh", Color.RED, Color.BLACK,
+                CurrentDateTime.getCurrentDate() + " " + CurrentDateTime.getCurrentTime()));
+        historyList.add(new History(3, "Nhat", Color.YELLOW, Color.BLACK,
+                CurrentDateTime.getCurrentDate() + " " + CurrentDateTime.getCurrentTime()));
+        historyList.add(new History(4, "Dang", Color.GREEN, Color.BLACK,
+                CurrentDateTime.getCurrentDate() + " " + CurrentDateTime.getCurrentTime()));
+
+        adapter.setData(historyList, new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Toast.makeText(HistoryActivity.this, "Clicked: " + historyList.get(position).name, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
         rcvHistory.setLayoutManager(linearLayoutManager);
 
         rcvHistory.setAdapter(adapter);
@@ -51,6 +61,7 @@ public class HistoryActivity extends AppCompatActivity {
     }
 
     private void initUI() {
+        linearLayoutManager = new LinearLayoutManager(this);
         rcvHistory = findViewById(R.id.rcv_history);
 //        cvHisName = findViewById(R.id.cv_his_name);
 //        cvHisName.setBackgroundColor(Color.YELLOW);
@@ -68,8 +79,8 @@ public class HistoryActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
 
-        if (itemId == R.id.item_delete_history){
-           askToDelete();
+        if (itemId == R.id.item_delete_history) {
+            askToDelete();
 
         }
         return super.onOptionsItemSelected(item);

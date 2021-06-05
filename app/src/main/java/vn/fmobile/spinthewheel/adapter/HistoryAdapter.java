@@ -14,13 +14,16 @@ import java.util.List;
 
 import vn.fmobile.spinthewheel.R;
 import vn.fmobile.spinthewheel.model.History;
+import vn.fmobile.spinthewheel.others.OnItemClickListener;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder> {
 
     List<History> historyList;
+    OnItemClickListener onItemClickListener;
 
-    public void setData(List<History> historyList) {
+    public void setData(List<History> historyList, OnItemClickListener onItemClickListener) {
         this.historyList = historyList;
+        this.onItemClickListener = onItemClickListener;
         notifyDataSetChanged();
     }
 
@@ -39,6 +42,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         holder.tvName.setTextColor(historyList.get(position).textColor);
         holder.tvName.setBackgroundColor(historyList.get(position).bgColor);
         holder.tvDateTime.setText(historyList.get(position).dateTime);
+        holder.setOnItemClickListener(onItemClickListener);
+
     }
 
     @Override
@@ -52,6 +57,12 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     public class HistoryViewHolder extends RecyclerView.ViewHolder {
         TextView tvIndex, tvName, tvDateTime;
         CardView cvName;
+        OnItemClickListener onItemClickListener;
+
+        public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+            this.onItemClickListener = onItemClickListener;
+        }
+
 
 
         public HistoryViewHolder(@NonNull View itemView) {
@@ -61,6 +72,13 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
             tvName = itemView.findViewById(R.id.tv_his_name);
             tvDateTime = itemView.findViewById(R.id.tv_his_data_time);
             cvName = itemView.findViewById(R.id.cv_his_name);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClickListener.onItemClick(v,getAdapterPosition());
+                }
+            });
         }
     }
 
