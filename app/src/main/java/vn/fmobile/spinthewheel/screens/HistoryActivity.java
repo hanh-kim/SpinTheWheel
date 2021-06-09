@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,10 +17,12 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import vn.fmobile.spinthewheel.others.CurrentDateTime;
+import vn.fmobile.spinthewheel.database.WheelDatabase;
+import vn.fmobile.spinthewheel.model.Wheel;
 import vn.fmobile.spinthewheel.R;
 import vn.fmobile.spinthewheel.adapter.HistoryAdapter;
 import vn.fmobile.spinthewheel.model.History;
+import vn.fmobile.spinthewheel.others.Memory;
 import vn.fmobile.spinthewheel.others.OnItemClickListener;
 
 public class HistoryActivity extends AppCompatActivity {
@@ -31,42 +32,38 @@ public class HistoryActivity extends AppCompatActivity {
     HistoryAdapter adapter;
     List<History> historyList;
     LinearLayoutManager linearLayoutManager;
+    int wheelId =0;
+    WheelDatabase database;
+    Wheel wheel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
         initUI();
-        historyList.add(new History(1, "Hanh", Color.GREEN, Color.BLACK,
-                CurrentDateTime.getCurrentDate() + " " + CurrentDateTime.getCurrentTime()));
-        historyList.add(new History(2, "Canh", Color.RED, Color.BLACK,
-                CurrentDateTime.getCurrentDate() + " " + CurrentDateTime.getCurrentTime()));
-        historyList.add(new History(3, "Nhat", Color.YELLOW, Color.BLACK,
-                CurrentDateTime.getCurrentDate() + " " + CurrentDateTime.getCurrentTime()));
-        historyList.add(new History(4, "Dang", Color.GREEN, Color.BLACK,
-                CurrentDateTime.getCurrentDate() + " " + CurrentDateTime.getCurrentTime()));
-
+        //Toast.makeText(this, "wheel id home:"+ Memory.wheelId , Toast.LENGTH_SHORT).show();
+        historyList = database.historyDAO().getHistoryFromDatabase(wheelId);
         adapter.setData(historyList, new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(HistoryActivity.this, "Clicked: " + historyList.get(position).name, Toast.LENGTH_SHORT).show();
+              askToDeleteItem(historyList.get(position));
             }
         });
-
-
         rcvHistory.setLayoutManager(linearLayoutManager);
-
         rcvHistory.setAdapter(adapter);
+
 
     }
 
     private void initUI() {
         linearLayoutManager = new LinearLayoutManager(this);
         rcvHistory = findViewById(R.id.rcv_history);
-//        cvHisName = findViewById(R.id.cv_his_name);
-//        cvHisName.setBackgroundColor(Color.YELLOW);
         adapter = new HistoryAdapter();
         historyList = new ArrayList<>();
+        database = WheelDatabase.getInstance(HistoryActivity.this);
+        wheelId = Memory.wheelId;
+
+
     }
 
     @Override
@@ -80,17 +77,17 @@ public class HistoryActivity extends AppCompatActivity {
         int itemId = item.getItemId();
 
         if (itemId == R.id.item_delete_history) {
-            askToDelete();
+            askToDeleteAll();
 
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void askToDelete() {
+    private void askToDeleteAll() {
         AlertDialog.Builder builder = new AlertDialog.Builder(HistoryActivity.this);
         builder.setCancelable(true);
         builder.setTitle("Xóa lịch sử");
-        builder.setMessage("Bạn có muốn tiếp tục xóa lịch quay không?");
+        builder.setMessage("Bạn có muốn tiếp tục xóa toàn bộ lịch sử quay không?");
 
 
         builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
@@ -103,9 +100,38 @@ public class HistoryActivity extends AppCompatActivity {
         builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                database.historyDAO().deleteAll(wheelId);
                 historyList.clear();
                 adapter.notifyDataSetChanged();
-                Toast.makeText(HistoryActivity.this, "Delete button was clicked!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(HistoryActivity.this, "Xóa thành công!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        builder.show();
+    }
+
+    private void askToDeleteItem(History history) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(HistoryActivity.this);
+        builder.setCancelable(true);
+        builder.setTitle("Xóa lịch sử");
+        builder.setMessage("Bạn có muốn tiếp tục xóa mục này khỏi lịch sử quay không?");
+
+
+        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                database.historyDAO().deleteHistoryItem(history);
+                historyList.remove(history);
+                adapter.notifyDataSetChanged();
+                Toast.makeText(HistoryActivity.this, "Xóa thành công!", Toast.LENGTH_SHORT).show();
             }
         });
 

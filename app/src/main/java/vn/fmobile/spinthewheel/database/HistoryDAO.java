@@ -19,9 +19,12 @@ public interface HistoryDAO {
     @Delete
     void deleteHistoryItem(History history);
 
-    @Query("DELETE FROM HISTORY")
-    void deleteAll();
+    @Query("DELETE FROM HISTORY WHERE wheelId = :wheelId")
+    void deleteAll(int wheelId);
 
     @Query("SELECT * FROM HISTORY")
     List<History> getHistoryFromDatabase();
+
+    @Query("SELECT * FROM HISTORY WHERE wheelId = :wheelId")
+    List<History> getHistoryFromDatabase(int wheelId);
 }

@@ -25,32 +25,33 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_margin="25dp"
-            app:cardBackgroundColor="#F84D4D"
+            app:cardBackgroundColor="#F8ED8C"
 
             app:cardCornerRadius="5dp">
 
             <TextView
-                android:id="@+id/tv_preview_name_item"
+                android:id="@+id/tv_preview_item_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:gravity="center"
                 android:layout_margin="10dp"
-                android:hint="Tên mục"
-                android:textColor="#870202"
+                android:hint="Tiêu đề"
+                android:textColor="#101010"
                 android:textSize="18dp"
                 android:textStyle="bold" />
 
         </androidx.cardview.widget.CardView>
 
         <EditText
-            android:id="@+id/edt_item_name"
+            android:id="@+id/edt_item_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:background="@drawable/custom_text_box"
             android:drawableRight="@drawable/ic_edit_pencil"
             android:drawablePadding="5dp"
-            android:hint="Tên  mục"
+            android:hint="Tiêu đề"
             android:padding="5dp"
             android:textSize="20dp" />
 
@@ -79,7 +80,7 @@
                 android:layout_height="40dp"
                 android:layout_alignParentRight="true"
                 android:layout_gravity="center_horizontal"
-                app:cardBackgroundColor="#870202"
+                app:cardBackgroundColor="#101010"
 
                 />
 
@@ -110,10 +111,22 @@
                 android:layout_height="40dp"
                 android:layout_alignParentRight="true"
                 android:layout_gravity="center_horizontal"
-                app:cardBackgroundColor="#F84D4D" />
+                app:cardBackgroundColor="#F8ED8C" />
 
 
         </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_error"
+            android:gravity="center"
+            android:layout_margin="5dp"
+            android:text="Mời nhập đủ tiêu đề"
+            android:textColor="@color/color9"
+            android:visibility="invisible"
+            />
+
 
 
         <include layout="@layout/layout_button_1" />

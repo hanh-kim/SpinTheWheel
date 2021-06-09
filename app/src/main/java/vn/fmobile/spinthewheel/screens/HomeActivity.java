@@ -20,10 +20,12 @@ import vn.fmobile.spinthewheel.R;
 import vn.fmobile.spinthewheel.adapter.WheelApdapter;
 import vn.fmobile.spinthewheel.database.WheelDatabase;
 import vn.fmobile.spinthewheel.model.Wheel;
+import vn.fmobile.spinthewheel.others.Memory;
 import vn.fmobile.spinthewheel.others.OnItemClickListener;
 
 public class HomeActivity extends AppCompatActivity {
 
+    WheelDatabase database;
     RecyclerView recyclerView;
     FloatingActionButton btnAdd;
 
@@ -32,43 +34,46 @@ public class HomeActivity extends AppCompatActivity {
     WheelView wheelView;
     WheelApdapter wheelApdapter;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         initUI();
-        WheelDatabase.getInstance(this);
-        WheelDatabase.getInstance(this);
-        for (int i = 0; i < 5; i++) {
-            Wheel wheel = new Wheel();
-            wheel.title = "Lucky wheel " + (i + 1);
-            wheel.amount = 5 + i;
-            wheelList.add(wheel);
-        }
 
 
-        for (int i = 0; i < 10; i++) {
-            WheelItem item = new WheelItem();
-            if (i % 2 == 0) {
-               // item.title = "hanh" + (i + 1);
-                item.secondaryText="hanh"+(i+1);
-                item.backgroundColor = Color.RED;
-                item.textColor = Color.YELLOW;
-            } else {
-                //item.title = "canh" + (i + 1);
-                item.secondaryText="canh"+(i+1);
-                item.backgroundColor = Color.GREEN;
-                item.textColor = Color.YELLOW;
-            }
-            wheelItemList.add(item);
-
-        }
-
-        wheelApdapter.setData(wheelList, wheelItemList);
+        wheelApdapter.setData(database);
         wheelApdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                startActivity(new Intent(HomeActivity.this, SpinActivity.class));
+                Memory.wheelId = wheelList.get(position).id;
+                Intent intent = new Intent(HomeActivity.this, SpinActivity.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("wheel", wheelList.get(position));
+                intent.putExtras(bundle);
+                startActivity(intent);
+
+                startActivity(intent);
+            }
+        });
+        wheelApdapter.onSettingAndDeleteListener(new WheelApdapter.OnSettingAndDeleteListener() {
+            @Override
+            public void onSettingListener(Wheel wheel, int position) {
+                Memory.wheelId = wheelList.get(position).id;
+                Intent intent = new Intent(HomeActivity.this, CustomizeWheelActivity.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("wheel", wheelList.get(position));
+                intent.putExtras(bundle);
+                startActivity(intent);
+
+                startActivity(intent);
+            }
+
+            @Override
+            public void onDeleteListener(Wheel wheel, int position) {
+                database.wheelDAO().deleteWheelInDatabase(wheel);
             }
         });
 
@@ -79,14 +84,13 @@ public class HomeActivity extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Wheel wheel = new Wheel();
+                wheel.title = "";
+                wheel.round = 5;
+                wheel.amount = 0;
+                wheel.isActive = 0;
+                database.wheelDAO().addWheelIntoDatabase(wheel);
                 startActivity(new Intent(HomeActivity.this, AddWheelActivity.class));
-            }
-        });
-
-        recyclerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
             }
         });
 
@@ -97,7 +101,11 @@ public class HomeActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.rcv_wheel);
         btnAdd = findViewById(R.id.fab_add);
         wheelItemList = new ArrayList<>();
-        wheelList = new ArrayList<>();
+
         wheelApdapter = new WheelApdapter();
+        database = WheelDatabase.getInstance(HomeActivity.this.getApplicationContext());
+        database.wheelDAO().deleteWheelIsActive(0);
+        wheelList = database.wheelDAO().getAllWheelFromDatabase();
+
     }
 }

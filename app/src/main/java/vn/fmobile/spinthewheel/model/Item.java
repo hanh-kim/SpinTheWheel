@@ -17,8 +17,4 @@ public class Item {
     public int backgroundColor;
     public int textColor;
 
-
-    public Item() {
-        super();
-    }
 }

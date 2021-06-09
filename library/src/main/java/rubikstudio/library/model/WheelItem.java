@@ -9,5 +9,5 @@ public class WheelItem {
     public int icon;
     public int backgroundColor;
     public int textColor;
-    public int round;
+
 }

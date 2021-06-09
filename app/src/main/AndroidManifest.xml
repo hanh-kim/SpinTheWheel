@@ -9,18 +9,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SpinTheWheel">
-        <activity android:name=".screens.AddWheelActivity"
+        <activity
+            android:name=".screens.AddWheelActivity"
             android:label="Vòng quay mới"
-            android:parentActivityName=".screens.HomeActivity"></activity>
+            android:parentActivityName=".screens.HomeActivity" />
         <activity
             android:name=".screens.CustomizeWheelActivity"
             android:label="Chỉnh sửa"
-            android:parentActivityName=".screens.SpinActivity" />
+            android:parentActivityName=".screens.HomeActivity" />
         <activity android:name=".screens.HomeActivity" />
         <activity
             android:name=".screens.HistoryActivity"
             android:label="Lịch sử"
             android:parentActivityName=".screens.SpinActivity" />
+        <activity
+            android:name=".screens.SpinActivity"
+            android:label="Vòng quay"
+            android:parentActivityName=".screens.HomeActivity" />
         <activity
             android:name=".screens.SplashScreenActivity"
             android:theme="@style/Theme.SpinTheWheel.NoActionbar">
@@ -30,10 +35,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".screens.SpinActivity"
-            android:label="Vòng quay"
-            android:parentActivityName=".screens.HomeActivity"></activity>
+
     </application>
 
 </manifest>
