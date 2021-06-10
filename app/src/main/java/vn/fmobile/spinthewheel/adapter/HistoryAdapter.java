@@ -37,7 +37,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
 
     @Override
     public void onBindViewHolder(@NonNull HistoryAdapter.HistoryViewHolder holder, int position) {
-        holder.tvIndex.setText(String.valueOf(historyList.get(position).id));
+        holder.tvIndex.setText(String.valueOf(position+1));
         holder.tvName.setText(historyList.get(position).name);
         holder.tvName.setTextColor(historyList.get(position).textColor);
         holder.tvName.setBackgroundColor(historyList.get(position).bgColor);

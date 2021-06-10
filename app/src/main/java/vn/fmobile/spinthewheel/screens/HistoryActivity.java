@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -32,21 +33,24 @@ public class HistoryActivity extends AppCompatActivity {
     HistoryAdapter adapter;
     List<History> historyList;
     LinearLayoutManager linearLayoutManager;
-    int wheelId =0;
+    int wheelId = 0;
     WheelDatabase database;
     Wheel wheel;
+    TextView tvNotifyEmpty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
         initUI();
+
         //Toast.makeText(this, "wheel id home:"+ Memory.wheelId , Toast.LENGTH_SHORT).show();
         historyList = database.historyDAO().getHistoryFromDatabase(wheelId);
+        checkListIsEmpty();
         adapter.setData(historyList, new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-              askToDeleteItem(historyList.get(position));
+                askToDeleteItem(historyList.get(position));
             }
         });
         rcvHistory.setLayoutManager(linearLayoutManager);
@@ -62,7 +66,8 @@ public class HistoryActivity extends AppCompatActivity {
         historyList = new ArrayList<>();
         database = WheelDatabase.getInstance(HistoryActivity.this);
         wheelId = Memory.wheelId;
-
+        tvNotifyEmpty = findViewById(R.id.tv_notify_empty);
+        tvNotifyEmpty.setVisibility(View.GONE);
 
     }
 
@@ -104,6 +109,7 @@ public class HistoryActivity extends AppCompatActivity {
                 historyList.clear();
                 adapter.notifyDataSetChanged();
                 Toast.makeText(HistoryActivity.this, "Xóa thành công!", Toast.LENGTH_SHORT).show();
+                checkListIsEmpty();
             }
         });
 
@@ -132,10 +138,18 @@ public class HistoryActivity extends AppCompatActivity {
                 historyList.remove(history);
                 adapter.notifyDataSetChanged();
                 Toast.makeText(HistoryActivity.this, "Xóa thành công!", Toast.LENGTH_SHORT).show();
+                checkListIsEmpty();
             }
         });
 
 
         builder.show();
+    }
+
+    private void checkListIsEmpty() {
+        if (historyList.size() == 0) {
+            tvNotifyEmpty.setVisibility(View.VISIBLE);
+        } else tvNotifyEmpty.setVisibility(View.GONE);
+
     }
 }

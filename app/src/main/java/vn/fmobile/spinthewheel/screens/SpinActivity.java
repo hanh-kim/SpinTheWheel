@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -40,44 +41,23 @@ public class SpinActivity extends AppCompatActivity {
     Bundle bundle;
     WheelDatabase database;
     Wheel wheel;
-    int wheelId=0;
+    int wheelId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spin);
         initUI();
-
-
-   //     Toast.makeText(this, "wheel id home:"+ Memory.wheelId +"- id:"+wheel.id, Toast.LENGTH_SHORT).show();
         tvWheelTitle.setText(wheel.title);
-        for (Item item : itemList) {
-            WheelItem wheelItem = new WheelItem();
-            wheelItem.id = item.id;
-            wheelItem.idWheel = item.wheelId;
-            wheelItem.icon = item.icon;
-            wheelItem.secondaryText = item.title;
-            wheelItem.backgroundColor = item.backgroundColor;
-            wheelItem.textColor = item.textColor;
-            wheelItemList.add(wheelItem);
+        setDataForWheel(itemList);
 
-        }
-
-
-        wheelView.setData(wheelItemList);
-        wheelView.setRound(wheel.round);
-
-        /*wheelView.setLuckyWheelBackgrouldColor(0xff0000ff);
-        wheelView.setLuckyWheelTextColor(0xffcc0000);
-        wheelView.setLuckyWheelCenterImage(getResources().getDrawable(R.drawable.icon));
-        wheelView.setLuckyWheelCursorImage(R.drawable.ic_cursor);*/
 
         btnSpin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int index = getRandomIndex();
                 wheelView.startWheelWithTargetIndex(index);
-                wheel.amount = wheel.amount+1;
+                wheel.amount = wheel.amount + 1;
 
                 tvWheelTitle.setText(wheel.title);
                 database.wheelDAO().updateWheel(wheel);
@@ -89,7 +69,7 @@ public class SpinActivity extends AppCompatActivity {
             public void onClick(View v) {
                 int index = getRandomIndex();
                 wheelView.startWheelWithTargetIndex(index);
-                wheel.amount = +1;
+                wheel.amount = wheel.amount + 1;
                 database.wheelDAO().updateWheel(wheel);
             }
         });
@@ -118,7 +98,8 @@ public class SpinActivity extends AppCompatActivity {
                 history.textColor = txtColor;
                 history.dateTime = CurrentDateTime.getCurrentDate() + " " + CurrentDateTime.getCurrentTime();
                 database.historyDAO().insertHistoryToDatabase(history);
-                notificationResult(history);
+
+                //notificationResult(history);
 
             }
         });
@@ -139,7 +120,7 @@ public class SpinActivity extends AppCompatActivity {
         icCenter = findViewById(R.id.ic_spin_center);
         database = WheelDatabase.getInstance(SpinActivity.this.getApplicationContext());
 
-        wheelId =  Memory.wheelId;
+        wheelId = Memory.wheelId;
         wheel = database.wheelDAO().getWheelFromDatabase(wheelId);
         itemList = database.wheelItemDAO().getWheelItemFromDatabase(wheel.id);
 
@@ -164,15 +145,15 @@ public class SpinActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void getData(){
+    private void getData() {
         bundle = getIntent().getExtras();
         wheel = (Wheel) bundle.getSerializable("wheel");
         itemList = database.wheelItemDAO().getWheelItemFromDatabase(wheel.id);
     }
 
-    private void notificationResult(History history){
+    private void notificationResult(History history) {
         AlertDialog.Builder builder = new AlertDialog.Builder(SpinActivity.this);
-        View view = getLayoutInflater().inflate(R.layout.layout_notify_result,null);
+        View view = getLayoutInflater().inflate(R.layout.layout_notify_result, null);
         TextView tvResult = view.findViewById(R.id.tv_notify_result);
         builder.setView(view);
         builder.setCancelable(true);
@@ -185,8 +166,39 @@ public class SpinActivity extends AppCompatActivity {
 
     }
 
+    public void setDataForWheel(List<Item> itemList) {
+        for (Item item : itemList) {
+            WheelItem wheelItem = new WheelItem();
+            wheelItem.id = item.id;
+            wheelItem.idWheel = item.wheelId;
+            wheelItem.icon = item.icon;
+            wheelItem.secondaryText = item.title;
+            wheelItem.backgroundColor = item.backgroundColor;
+            wheelItem.textColor = item.textColor;
+            wheelItemList.add(wheelItem);
+
+        }
+        wheelView.setData(wheelItemList);
+        wheelView.setRound(wheel.round);
+
+        /*wheelView.setLuckyWheelBackgrouldColor(0xff0000ff);
+        wheelView.setLuckyWheelTextColor(0xffcc0000);
+        wheelView.setLuckyWheelCenterImage(getResources().getDrawable(R.drawable.icon));
+        wheelView.setLuckyWheelCursorImage(R.drawable.ic_cursor);*/
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        SpinActivity.this.finish();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        itemList = database.wheelItemDAO().getWheelItemFromDatabase(wheel.id);
+        setDataForWheel(itemList);
+
     }
 }

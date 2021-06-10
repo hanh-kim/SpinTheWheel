@@ -104,7 +104,6 @@ public class CustomizeWheelActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 askToDeleteItem(wheel);
-              //  Toast.makeText(CustomizeWheelActivity.this, "Deleting", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -521,6 +520,6 @@ public class CustomizeWheelActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finish();
+
     }
 }

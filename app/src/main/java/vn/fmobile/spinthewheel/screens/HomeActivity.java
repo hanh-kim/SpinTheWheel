@@ -57,12 +57,11 @@ public class HomeActivity extends AppCompatActivity {
                 Memory.wheelId = wheelList.get(position).id;
                 Intent intent = new Intent(HomeActivity.this, SpinActivity.class);
 
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("wheel", wheelList.get(position));
-                intent.putExtras(bundle);
+//                Bundle bundle = new Bundle();
+//                bundle.putSerializable("wheel", wheelList.get(position));
+//                intent.putExtras(bundle);
                 startActivity(intent);
 
-                startActivity(intent);
             }
         });
         wheelApdapter.onSettingAndDeleteListener(new WheelApdapter.OnSettingAndDeleteListener() {
@@ -70,13 +69,11 @@ public class HomeActivity extends AppCompatActivity {
             public void onSettingListener(Wheel wheel, int position) {
                 Memory.wheelId = wheelList.get(position).id;
                 Intent intent = new Intent(HomeActivity.this, CustomizeWheelActivity.class);
-
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("wheel", wheelList.get(position));
-                intent.putExtras(bundle);
+//                Bundle bundle = new Bundle();
+//                bundle.putSerializable("wheel", wheelList.get(position));
+//                intent.putExtras(bundle);
                 startActivity(intent);
 
-                startActivity(intent);
             }
 
             @Override
@@ -159,7 +156,10 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    protected void onResume() {
+        super.onResume();
+        wheelList = database.wheelDAO().getAllWheelFromDatabase();
+        wheelApdapter.notifyDataSetChanged();
+
     }
 }

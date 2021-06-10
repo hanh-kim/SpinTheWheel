@@ -151,8 +151,12 @@ public class AddWheelActivity extends AppCompatActivity implements View.OnClickL
 
         if (itemId == R.id.item_done) {
             if (itemList.size()==0){
-                Toast.makeText(this, "Vòng quay trống! Hãy thêm các ô cho vòng quay.", Toast.LENGTH_SHORT).show();
-            }else {
+               Toast.makeText(this, "Vòng quay trống! Hãy thêm các ô cho vòng quay.", Toast.LENGTH_SHORT).show();
+
+            }else if (itemList.size()==1){
+                Toast.makeText(this, "Vòng quay cần ít nhất 2 ô để quay", Toast.LENGTH_SHORT).show();
+
+            }else  {
                 saveWheelIntoDatabase(wheel);
                 saveItemIntoDatabase(itemList);
                 Memory.wheelId = wheel.id;
