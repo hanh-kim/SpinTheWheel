@@ -1,13 +1,17 @@
 package vn.fmobile.spinthewheel.screens;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -19,6 +23,7 @@ import rubikstudio.library.model.WheelItem;
 import vn.fmobile.spinthewheel.R;
 import vn.fmobile.spinthewheel.adapter.WheelApdapter;
 import vn.fmobile.spinthewheel.database.WheelDatabase;
+import vn.fmobile.spinthewheel.model.History;
 import vn.fmobile.spinthewheel.model.Wheel;
 import vn.fmobile.spinthewheel.others.Memory;
 import vn.fmobile.spinthewheel.others.OnItemClickListener;
@@ -34,15 +39,18 @@ public class HomeActivity extends AppCompatActivity {
     WheelView wheelView;
     WheelApdapter wheelApdapter;
 
+    TextView tvNotifyEmpty;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         initUI();
+        checkListIsEmpty();
 
 
-        wheelApdapter.setData(database);
+        wheelApdapter.setData(database,wheelList);
         wheelApdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -73,7 +81,7 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onDeleteListener(Wheel wheel, int position) {
-                database.wheelDAO().deleteWheelInDatabase(wheel);
+                askToDeleteItem(wheel);
             }
         });
 
@@ -100,6 +108,8 @@ public class HomeActivity extends AppCompatActivity {
     public void initUI() {
         recyclerView = findViewById(R.id.rcv_wheel);
         btnAdd = findViewById(R.id.fab_add);
+        tvNotifyEmpty = findViewById(R.id.tv_notify_empty);
+        tvNotifyEmpty.setVisibility(View.GONE);
         wheelItemList = new ArrayList<>();
 
         wheelApdapter = new WheelApdapter();
@@ -107,5 +117,49 @@ public class HomeActivity extends AppCompatActivity {
         database.wheelDAO().deleteWheelIsActive(0);
         wheelList = database.wheelDAO().getAllWheelFromDatabase();
 
+    }
+
+    private void checkListIsEmpty(){
+     //   wheelList = database.wheelDAO().getAllWheelFromDatabase();
+        if (wheelList.size()==0){
+            tvNotifyEmpty.setVisibility(View.VISIBLE);
+        }else  tvNotifyEmpty.setVisibility(View.GONE);
+
+    }
+
+    private void askToDeleteItem(Wheel wheel) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+        builder.setCancelable(true);
+        builder.setTitle("Xóa vòng quay");
+        builder.setMessage("Bạn có muốn tiếp tục xóa vòng quay này không?");
+
+
+        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                database.wheelDAO().deleteWheelInDatabase(wheel);
+                wheelList.remove(wheel);
+                wheelApdapter.notifyDataSetChanged();
+
+                checkListIsEmpty();
+
+                Toast.makeText(HomeActivity.this, "Xóa thành công!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        builder.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

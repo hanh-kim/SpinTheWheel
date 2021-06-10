@@ -288,6 +288,7 @@ public class AddWheelActivity extends AppCompatActivity implements View.OnClickL
                 item.title = title;
                 itemList.add(item);
                 adapter.notifyDataSetChanged();
+                showPreviewWheel(itemList);
                 alertDialog.cancel();
             }
         });
@@ -411,7 +412,7 @@ public class AddWheelActivity extends AppCompatActivity implements View.OnClickL
                 tvError.setVisibility(View.INVISIBLE);
                 item.title = title;
                 adapter.notifyDataSetChanged();
-
+                showPreviewWheel(itemList);
                 alertDialog.cancel();
             }
         });
@@ -421,7 +422,7 @@ public class AddWheelActivity extends AppCompatActivity implements View.OnClickL
             public void onClick(View v) {
                 itemList.remove(item);
                 adapter.notifyDataSetChanged();
-
+                showPreviewWheel(itemList);
                 alertDialog.cancel();
             }
         });

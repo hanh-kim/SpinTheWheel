@@ -4,9 +4,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.SpinTheWheel">
         <activity
@@ -16,7 +16,7 @@
         <activity
             android:name=".screens.CustomizeWheelActivity"
             android:label="Chỉnh sửa"
-            android:parentActivityName=".screens.HomeActivity" />
+            android:parentActivityName=".screens.SpinActivity" />
         <activity android:name=".screens.HomeActivity" />
         <activity
             android:name=".screens.HistoryActivity"

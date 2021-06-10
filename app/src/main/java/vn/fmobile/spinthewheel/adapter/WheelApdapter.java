@@ -35,9 +35,9 @@ public class WheelApdapter extends RecyclerView.Adapter<WheelApdapter.WheelViewH
 //        notifyDataSetChanged();
 //    }
 
-    public void setData(WheelDatabase database) {
+    public void setData(WheelDatabase database,List<Wheel> wheelList ) {
         this.database = database;
-        wheelList = database.wheelDAO().getAllWheelFromDatabase();
+        this.wheelList = wheelList;
         notifyDataSetChanged();
     }
 
@@ -87,7 +87,7 @@ public class WheelApdapter extends RecyclerView.Adapter<WheelApdapter.WheelViewH
             holder.tvTitle.setText("Vòng quay số " + position);
         } else holder.tvTitle.setText(wheelList.get(position).title);
 
-        holder.tvAmount.setText("Spins: " + wheelList.get(position).amount);
+        holder.tvAmount.setText("Đã quay: " + wheelList.get(position).amount);
         holder.wheelView.setData(wheelItemList);
         holder.wheelView.setRound(0);
 
@@ -104,7 +104,7 @@ public class WheelApdapter extends RecyclerView.Adapter<WheelApdapter.WheelViewH
             @Override
             public void onClick(View v) {
                 onSettingAndDeleteListener.onDeleteListener(wheelList.get(position),position);
-                wheelList.remove(position);
+              //  wheelList.remove(position);
                 notifyDataSetChanged();
             }
         });

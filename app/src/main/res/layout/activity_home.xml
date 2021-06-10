@@ -25,5 +25,17 @@
         app:rippleColor="@color/purple_200"
         />
 
+    <TextView
+        android:id="@+id/tv_notify_empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:hint="Không có vòng quay nào"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:visibility="gone"
+        />
+
+
 
 </RelativeLayout>

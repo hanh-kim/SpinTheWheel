@@ -67,7 +67,7 @@
                         android:layout_height="150dp"
                         android:layout_gravity="center_horizontal"
                         android:layout_margin="5dp"
-                        app:lkwBackgroundColor="#FF9800"
+                        app:lkwBackgroundColor="#FBAB34"
                         app:lkwCenterImage="@drawable/ic_center_wheel"
                         app:lkwSecondaryTextSize="8dp"
                         app:lkwEdgeColor="#FFE500"

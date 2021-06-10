@@ -7,6 +7,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -102,7 +103,8 @@ public class CustomizeWheelActivity extends AppCompatActivity {
         tvDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(CustomizeWheelActivity.this, "Deleting", Toast.LENGTH_SHORT).show();
+                askToDeleteItem(wheel);
+              //  Toast.makeText(CustomizeWheelActivity.this, "Deleting", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -478,7 +480,6 @@ public class CustomizeWheelActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-
     private void saveWheelIntoDatabase(Wheel wheel) {
         String wheelTitle = edtWheelTitle.getText().toString().trim();
         if (wheelTitle.isEmpty()){
@@ -486,6 +487,35 @@ public class CustomizeWheelActivity extends AppCompatActivity {
         }else  wheel.title = wheelTitle;
         wheel.round = (int) sliderRound.getValue();
         database.wheelDAO().updateWheel(wheel);
+    }
+
+    private void askToDeleteItem(Wheel wheel) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(CustomizeWheelActivity.this);
+        builder.setCancelable(true);
+        builder.setTitle("Xóa vòng quay");
+        builder.setMessage("Bạn có muốn tiếp tục xóa vòng quay này không?");
+
+
+        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                database.wheelDAO().deleteWheelInDatabase(wheel);
+
+                startActivity(new Intent(CustomizeWheelActivity.this, HomeActivity.class));
+                CustomizeWheelActivity.this.finish();
+                Toast.makeText(CustomizeWheelActivity.this, "Xóa thành công!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        builder.show();
     }
 
     @Override

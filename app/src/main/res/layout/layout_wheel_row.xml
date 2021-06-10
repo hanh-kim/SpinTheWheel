@@ -18,8 +18,8 @@
         android:id="@+id/wheel_view_avatar"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        app:lkwBackgroundColor="#FF9800"
-        app:lkwCenterImage="@drawable/wheel2"
+        app:lkwBackgroundColor="#FBCF4B"
+        app:lkwCenterImage="@drawable/ic_center_wheel"
         app:lkwTopTextColor="#030304"
         app:lkwSecondaryTextSize="10dp"
 
@@ -57,17 +57,17 @@
             android:orientation="horizontal">
             <ImageView
 
-                android:layout_marginRight="20dp"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_marginRight="15dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:id="@+id/ic_setting"
                 android:src="@drawable/ic_baseline_settings"
                 />
 
             <ImageView
                 android:layout_marginRight="10dp"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:id="@+id/ic_delete"
                 android:src="@drawable/ic_baseline_delete"
                 />

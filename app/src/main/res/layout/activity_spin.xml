@@ -15,24 +15,23 @@
         android:hint="Wheel title"
         android:gravity="center"
         android:layout_centerHorizontal="true"
-        android:layout_margin="15dp"
+        android:layout_margin="@dimen/activity_vertical_margin"
         android:textSize="25dp"
         android:fontFamily="serif"
         android:textStyle="bold"
         android:textColor="#100F0F"
         android:shadowColor="#C6C5C5"
-
-        />
+        android:layout_above="@+id/tv_result" />
 
     <TextView
         android:id="@+id/tv_result"
-        android:layout_below="@+id/tv_wheel_title"
+        android:layout_above="@+id/wheel_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="U-Spin"
         android:gravity="center"
         android:layout_centerHorizontal="true"
-        android:layout_margin="20dp"
+        android:layout_margin="@dimen/activity_vertical_margin"
         android:textSize="20dp"
         android:fontFamily="serif"
         android:textStyle="bold"
@@ -42,12 +41,9 @@
         />
 
 
-
-
-
     <rubikstudio.library.WheelView
         android:layout_centerInParent="true"
-        app:lkwBackgroundColor="#FF9800"
+        app:lkwBackgroundColor="#FBAB34"
         app:lkwTopTextColor="#030304"
         app:lkwTopTextSize="20dp"
         app:lkwSecondaryTextSize="18dp"
@@ -57,8 +53,7 @@
         android:layout_width="400dp"
         android:layout_height="400dp"
         app:lkwEdgeColor="#FFE500"
-        app:lkwEdgeWidth="3"
-        />
+        app:lkwEdgeWidth="3" />
 
 
     <Button
@@ -68,20 +63,19 @@
         android:text="Quay"
 
         android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        />
+        android:layout_alignParentBottom="true" />
 
     <FrameLayout
         android:layout_centerInParent="true"
         android:layout_width="400dp"
         android:layout_height="400dp">
+
         <ImageView
             android:id="@+id/ic_spin_center"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:src="@drawable/ic_center_wheel"
-            android:layout_gravity="center"
-            />
+            android:layout_gravity="center" />
     </FrameLayout>
 
 </RelativeLayout>

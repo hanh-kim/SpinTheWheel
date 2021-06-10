@@ -48,7 +48,7 @@ public class SpinActivity extends AppCompatActivity {
         setContentView(R.layout.activity_spin);
         initUI();
 
-        itemList = database.wheelItemDAO().getWheelItemFromDatabase(wheel.id);
+
    //     Toast.makeText(this, "wheel id home:"+ Memory.wheelId +"- id:"+wheel.id, Toast.LENGTH_SHORT).show();
         tvWheelTitle.setText(wheel.title);
         for (Item item : itemList) {
@@ -141,7 +141,7 @@ public class SpinActivity extends AppCompatActivity {
 
         wheelId =  Memory.wheelId;
         wheel = database.wheelDAO().getWheelFromDatabase(wheelId);
-
+        itemList = database.wheelItemDAO().getWheelItemFromDatabase(wheel.id);
 
     }
 
@@ -183,5 +183,10 @@ public class SpinActivity extends AppCompatActivity {
 
         builder.show();
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }
