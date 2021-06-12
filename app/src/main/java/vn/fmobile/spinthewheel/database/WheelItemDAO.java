@@ -16,11 +16,14 @@ public interface WheelItemDAO {
     @Query("SELECT * FROM WHEEL_ITEM")
     List<Item> getAllItemFromDatabase();
 
-    @Query("SELECT * FROM WHEEL_ITEM WHERE wheelId = :id")
-    List<Item> getWheelItemFromDatabase(int id);
+    @Query("SELECT * FROM WHEEL_ITEM WHERE wheelId = :wheelId")
+    List<Item> getWheelItemFromDatabase(int wheelId);
 
     @Query("DELETE FROM WHEEL_ITEM")
     void deleteAllItemInDatabase();
+
+    @Query("DELETE FROM WHEEL_ITEM WHERE wheelId = :wheelId")
+    void deleteAllItemInDatabase(int wheelId);
 
     @Insert
     void insertItemToDatabase(Item item);

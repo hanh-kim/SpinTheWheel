@@ -505,8 +505,8 @@ public class CustomizeWheelActivity extends AppCompatActivity {
         builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                database.wheelItemDAO().deleteAllItemInDatabase(wheel.id);
                 database.wheelDAO().deleteWheelInDatabase(wheel);
-
                 startActivity(new Intent(CustomizeWheelActivity.this, HomeActivity.class));
                 CustomizeWheelActivity.this.finish();
                 Toast.makeText(CustomizeWheelActivity.this, "Xóa thành công!", Toast.LENGTH_SHORT).show();

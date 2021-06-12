@@ -165,7 +165,7 @@ public class AddWheelActivity extends AppCompatActivity implements View.OnClickL
                 bundle.putSerializable("wheel",wheel);
                 intent.putExtras(bundle);
                 startActivity(intent);
-                //this.finish();
+                AddWheelActivity.this.finish();
             }
         }
         return super.onOptionsItemSelected(item);

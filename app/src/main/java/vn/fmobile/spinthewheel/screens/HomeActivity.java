@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -23,7 +22,6 @@ import rubikstudio.library.model.WheelItem;
 import vn.fmobile.spinthewheel.R;
 import vn.fmobile.spinthewheel.adapter.WheelApdapter;
 import vn.fmobile.spinthewheel.database.WheelDatabase;
-import vn.fmobile.spinthewheel.model.History;
 import vn.fmobile.spinthewheel.model.Wheel;
 import vn.fmobile.spinthewheel.others.Memory;
 import vn.fmobile.spinthewheel.others.OnItemClickListener;
@@ -37,7 +35,7 @@ public class HomeActivity extends AppCompatActivity {
     List<Wheel> wheelList;
     List<WheelItem> wheelItemList;
     WheelView wheelView;
-    WheelApdapter wheelApdapter;
+    WheelApdapter adapter;
 
     TextView tvNotifyEmpty;
 
@@ -50,8 +48,9 @@ public class HomeActivity extends AppCompatActivity {
         checkListIsEmpty();
 
 
-        wheelApdapter.setData(database,wheelList);
-        wheelApdapter.setOnItemClickListener(new OnItemClickListener() {
+        adapter.setData(database,wheelList);
+
+        adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 Memory.wheelId = wheelList.get(position).id;
@@ -64,7 +63,7 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         });
-        wheelApdapter.onSettingAndDeleteListener(new WheelApdapter.OnSettingAndDeleteListener() {
+        adapter.onSettingAndDeleteListener(new WheelApdapter.OnSettingAndDeleteListener() {
             @Override
             public void onSettingListener(Wheel wheel, int position) {
                 Memory.wheelId = wheelList.get(position).id;
@@ -78,13 +77,13 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onDeleteListener(Wheel wheel, int position) {
-                askToDeleteItem(wheel);
+                askToDeleteItem(wheel,position);
             }
         });
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(wheelApdapter);
+        recyclerView.setAdapter(adapter);
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +108,7 @@ public class HomeActivity extends AppCompatActivity {
         tvNotifyEmpty.setVisibility(View.GONE);
         wheelItemList = new ArrayList<>();
 
-        wheelApdapter = new WheelApdapter();
+        adapter = new WheelApdapter();
         database = WheelDatabase.getInstance(HomeActivity.this.getApplicationContext());
         database.wheelDAO().deleteWheelIsActive(0);
         wheelList = database.wheelDAO().getAllWheelFromDatabase();
@@ -124,7 +123,7 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    private void askToDeleteItem(Wheel wheel) {
+    private void askToDeleteItem(Wheel wheel,int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
         builder.setCancelable(true);
         builder.setTitle("Xóa vòng quay");
@@ -141,10 +140,12 @@ public class HomeActivity extends AppCompatActivity {
         builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                database.wheelDAO().deleteWheelInDatabase(wheel);
-                wheelList.remove(wheel);
-                wheelApdapter.notifyDataSetChanged();
 
+                database.wheelItemDAO().deleteAllItemInDatabase(wheel.id);
+                database.wheelDAO().deleteWheelInDatabase(wheel);
+
+                wheelList.remove(position);
+                adapter.notifyDataSetChanged();
                 checkListIsEmpty();
 
                 Toast.makeText(HomeActivity.this, "Xóa thành công!", Toast.LENGTH_SHORT).show();
@@ -158,8 +159,8 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        wheelList = database.wheelDAO().getAllWheelFromDatabase();
-        wheelApdapter.notifyDataSetChanged();
+//        wheelList = database.wheelDAO().getAllWheelFromDatabase();
+        adapter.notifyDataSetChanged();
 
     }
 }
