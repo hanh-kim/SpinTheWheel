@@ -57,7 +57,7 @@ public class SpinActivity extends AppCompatActivity {
                 itemList = database.wheelItemDAO().getWheelItemFromDatabase(wheel.id);
                 setDataForWheel(itemList);
                 tvResult.setText(null);
-                findViewById(R.id.main_layout).setBackgroundColor(Color.WHITE);
+                findViewById(R.id.main_layout).setBackgroundColor(Color.parseColor("#C6C5C5"));
             }
         });
 
@@ -91,8 +91,8 @@ public class SpinActivity extends AppCompatActivity {
                 String title = wheelItemList.get(index).secondaryText;
                 int bgColor = wheelItemList.get(index).backgroundColor;
                 int txtColor = wheelItemList.get(index).textColor;
-                tvResult.setText("Kết quả quay: " + title);
-                tvResult.setShadowLayer(1, 1, 1, Color.WHITE);
+                tvResult.setText("" + title+"");
+                tvResult.setShadowLayer(50, 1, 1, Color.RED);
                 findViewById(R.id.main_layout).setBackgroundColor(bgColor);
                 History history = new History();
                 history.wheelId = wheelItemList.get(index).idWheel;
@@ -122,7 +122,7 @@ public class SpinActivity extends AppCompatActivity {
         icCenter = findViewById(R.id.ic_spin_center);
         database = WheelDatabase.getInstance(SpinActivity.this.getApplicationContext());
         tvWheelTitle.setTextColor(Color.WHITE);
-        tvWheelTitle.setShadowLayer(5, 2, 2, Color.BLACK);
+        tvWheelTitle.setShadowLayer(5, 1, 1, Color.BLACK);
         wheelId = Memory.wheelId;
         wheel = database.wheelDAO().getWheelFromDatabase(wheelId);
         itemList = database.wheelItemDAO().getWheelItemFromDatabase(wheel.id);
