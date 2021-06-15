@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_app_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.SpinTheWheel">
+        android:theme="@style/Theme.Uspin">
         <activity
             android:name=".screens.AddWheelActivity"
             android:label="Vòng quay mới"
