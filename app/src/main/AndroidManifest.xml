@@ -11,29 +11,30 @@
         android:theme="@style/Theme.Uspin">
         <activity
             android:name=".screens.AddWheelActivity"
-            android:label="Vòng quay mới"
-            android:parentActivityName=".screens.HomeActivity"
-             />
+            android:exported="false"
+            android:label="@string/str_new_spin"
+            android:parentActivityName=".screens.HomeActivity" />
         <activity
             android:name=".screens.CustomizeWheelActivity"
-            android:parentActivityName=".screens.SpinActivity"
-            android:label="Chỉnh sửa"
-            />
-        <activity android:name=".screens.HomeActivity"
-
-            />
+            android:exported="false"
+            android:label="@string/str_edit"
+            android:parentActivityName=".screens.SpinActivity" />
+        <activity
+            android:name=".screens.HomeActivity"
+            android:exported="false" />
         <activity
             android:name=".screens.HistoryActivity"
-            android:label="Lịch sử"
-            android:parentActivityName=".screens.SpinActivity"
-             />
+            android:exported="false"
+            android:label="@string/str_history"
+            android:parentActivityName=".screens.SpinActivity" />
         <activity
             android:name=".screens.SpinActivity"
-            android:parentActivityName=".screens.HomeActivity"
-            android:label="Vòng quay"
-           />
+            android:exported="false"
+            android:label="@string/str_spin"
+            android:parentActivityName=".screens.HomeActivity" />
         <activity
             android:name=".screens.SplashScreenActivity"
+            android:exported="true"
             android:theme="@style/Theme.SpinTheWheel.NoActionbar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

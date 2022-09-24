@@ -50,61 +50,47 @@ public class SpinActivity extends AppCompatActivity {
         tvWheelTitle.setText(wheel.title);
         setDataForWheel(itemList);
 
-
-        btnReset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                itemList = database.wheelItemDAO().getWheelItemFromDatabase(wheel.id);
-                setDataForWheel(itemList);
-                tvResult.setText(null);
-                findViewById(R.id.main_layout).setBackgroundColor(Color.parseColor("#C6C5C5"));
-            }
+        btnReset.setOnClickListener(v -> {
+            itemList = database.wheelItemDAO().getWheelItemFromDatabase(wheel.id);
+            setDataForWheel(itemList);
+            tvResult.setText(null);
+            findViewById(R.id.main_layout).setBackgroundColor(Color.parseColor("#C6C5C5"));
         });
 
-        icCenter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        icCenter.setOnClickListener(v -> {
 
-                if (itemList.size() < 2) {
-                    Toast.makeText(SpinActivity.this, "Hay thêm 1 ô mới để tiếp tục quay.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                int index = getRandomIndex();
-                wheelView.startWheelWithTargetIndex(index);
-                wheel.amount = wheel.amount + 1;
-                database.wheelDAO().updateWheel(wheel);
+            if (itemList.size() < 2) {
+                Toast.makeText(SpinActivity.this, getString(R.string.toast_add_one_cell_to_continue), Toast.LENGTH_SHORT).show();
+                return;
             }
+            int index = getRandomIndex();
+            wheelView.startWheelWithTargetIndex(index);
+            wheel.amount = wheel.amount + 1;
+            database.wheelDAO().updateWheel(wheel);
         });
 
-        wheelView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int index = getRandomIndex();
-
-                wheelView.startWheelWithTargetIndex(index);
-            }
+        wheelView.setOnClickListener(v -> {
+            int index = getRandomIndex();
+            wheelView.startWheelWithTargetIndex(index);
         });
 
-        wheelView.setOnRoundItemSelectedListener(new WheelView.RoundItemSelectedListener() {
-            @Override
-            public void onRoundItemSelected(int index) {
-                String title = wheelItemList.get(index).secondaryText;
-                int bgColor = wheelItemList.get(index).backgroundColor;
-                int txtColor = wheelItemList.get(index).textColor;
-                tvResult.setText("" + title+"");
-                tvResult.setShadowLayer(50, 1, 1, Color.RED);
-                findViewById(R.id.main_layout).setBackgroundColor(bgColor);
-                History history = new History();
-                history.wheelId = wheelItemList.get(index).idWheel;
-                history.name = title;
-                history.bgColor = bgColor;
-                history.textColor = txtColor;
-                history.dateTime = CurrentDateTime.getCurrentDate() + " " + CurrentDateTime.getCurrentTime();
-                database.historyDAO().insertHistoryToDatabase(history);
+        wheelView.setOnRoundItemSelectedListener(index -> {
+            String title = wheelItemList.get(index).secondaryText;
+            int bgColor = wheelItemList.get(index).backgroundColor;
+            int txtColor = wheelItemList.get(index).textColor;
+            tvResult.setText("" + title + "");
+            tvResult.setShadowLayer(50, 1, 1, Color.RED);
+            findViewById(R.id.main_layout).setBackgroundColor(bgColor);
+            History history = new History();
+            history.wheelId = wheelItemList.get(index).idWheel;
+            history.name = title;
+            history.bgColor = bgColor;
+            history.textColor = txtColor;
+            history.dateTime = CurrentDateTime.getCurrentDate() + " " + CurrentDateTime.getCurrentTime();
+            database.historyDAO().insertHistoryToDatabase(history);
 
-                notificationResult(history, index);
+            notificationResult(history, index);
 
-            }
         });
 
     }

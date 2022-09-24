@@ -7,7 +7,6 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -25,6 +24,7 @@ import android.widget.Toast;
 
 import com.google.android.material.slider.Slider;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +38,8 @@ import vn.fmobile.spinthewheel.model.Wheel;
 import vn.fmobile.spinthewheel.others.Memory;
 import vn.fmobile.spinthewheel.others.OnChangeColor;
 import vn.fmobile.spinthewheel.R;
-import vn.fmobile.spinthewheel.others.OnItemClickListener;
+import vn.fmobile.spinthewheel.utils.BundleKey;
+import vn.fmobile.spinthewheel.utils.Utils;
 
 public class CustomizeWheelActivity extends AppCompatActivity {
 
@@ -54,7 +55,7 @@ public class CustomizeWheelActivity extends AppCompatActivity {
     Bundle bundle;
     WheelDatabase database;
     Wheel wheel;
-    int wheelId =0;
+    int wheelId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,48 +67,27 @@ public class CustomizeWheelActivity extends AppCompatActivity {
         edtWheelTitle.setText(wheel.title);
 
         sliderRound.setValue((float) wheel.round);
-        tvCountSpinTimes.setText(wheel.round + "x");
+        tvCountSpinTimes.setText(MessageFormat.format(getString(R.string.format_count_spin_times),wheel.round));
 
         // show list item
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(CustomizeWheelActivity.this);
         rcvItem.setLayoutManager(linearLayoutManager);
 
-        adapter.setData(itemList, new OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                showCustomizeDialog(position);
-
-            }
-        });
+        adapter.setData(itemList, (view, position) -> showCustomizeDialog(position));
 
         rcvItem.setAdapter(adapter);
 
         // wheel pre
         showPreviewWheel(itemList);
 
-        sliderRound.addOnChangeListener(new Slider.OnChangeListener() {
-            @Override
-            public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
-                tvCountSpinTimes.setText((int) value + "x");
-                saveWheelIntoDatabase(wheel);
-            }
+        sliderRound.addOnChangeListener((slider, value, fromUser) -> {
+            tvCountSpinTimes.setText(MessageFormat.format(getString(R.string.format_count_spin_times),(int) value));
+            saveWheelIntoDatabase(wheel);
         });
 
-        icAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAddDialog();
-            }
-        });
+        icAdd.setOnClickListener(v -> showAddDialog());
 
-        tvDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                askToDeleteItem(wheel);
-            }
-        });
-
-
+        tvDelete.setOnClickListener(v -> askToDeleteItem(wheel));
     }
 
     private void initUI() {
@@ -124,8 +104,6 @@ public class CustomizeWheelActivity extends AppCompatActivity {
 
         wheelId = Memory.wheelId;
         wheel = database.wheelDAO().getWheelFromDatabase(wheelId);
-
-
     }
 
 
@@ -140,19 +118,19 @@ public class CustomizeWheelActivity extends AppCompatActivity {
         int itemId = item.getItemId();
 
         if (itemId == R.id.item_done) {
-            if (itemList.size()==0){
-                Toast.makeText(this, "Vòng quay trống! Hãy thêm các ô cho vòng quay.", Toast.LENGTH_SHORT).show();
-            }else {
+            if (itemList.size() == 0) {
+                Toast.makeText(this, getString(R.string.toast_spin_empty), Toast.LENGTH_SHORT).show();
+            } else {
 
                 saveWheelIntoDatabase(wheel);
                 Intent intent = new Intent(CustomizeWheelActivity.this, SpinActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("wheel",wheel);
+                bundle.putSerializable(BundleKey.KEY_WHEEL, wheel);
                 intent.putExtras(bundle);
                 startActivity(intent);
                 this.finish();
             }
-          //  this.finish();
+            //  this.finish();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -168,7 +146,6 @@ public class CustomizeWheelActivity extends AppCompatActivity {
             wheelItem.backgroundColor = item.backgroundColor;
             wheelItem.textColor = item.textColor;
             wheelItemList.add(wheelItem);
-
         }
 
         // set data for wheel
@@ -179,35 +156,31 @@ public class CustomizeWheelActivity extends AppCompatActivity {
 
         ColorPicker colorPicker = new ColorPicker(CustomizeWheelActivity.this);
         colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
-            @Override
-            public void onChooseColor(int position, int color) {
-                //  colorPicker.dismissDialog();
-            }
+                    @Override
+                    public void onChooseColor(int position, int color) {
+                        //  colorPicker.dismissDialog();
+                    }
 
-            @Override
-            public void onCancel() {
+                    @Override
+                    public void onCancel() {
 
-            }
-        }).addListenerButton("Chọn", new ColorPicker.OnButtonListener() {
-            @Override
-            public void onClick(View v, int position, int color) {
-                if (color == 0) {
-                    Toast.makeText(CustomizeWheelActivity.this, "Bạn chưa chọn màu", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                changeColor.setBackgroundColor(color);
-                changeColor.setTextColor(color);
-                colorPicker.dismissDialog();
+                    }
+                }).addListenerButton(getString(R.string.str_select), (v, position, color) -> {
+                    if (color == 0) {
+                        Toast.makeText(CustomizeWheelActivity.this, getString(R.string.toast_no_select_colors), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    changeColor.setBackgroundColor(color);
+                    changeColor.setTextColor(color);
+                    colorPicker.dismissDialog();
 
-            }
-        }).disableDefaultButtons(true)
+                }).disableDefaultButtons(true)
                 //  .setDefaultColorButton(Color.parseColor("#f84c44"))
                 .setColumns(5)
-                .setTitle("Chọn màu")
+                .setTitle(getString(R.string.str_select_color))
                 .setRoundColorButton(true)
                 .setDismissOnButtonListenerClick(true)
                 .show();
-
 
     }
 
@@ -218,7 +191,7 @@ public class CustomizeWheelActivity extends AppCompatActivity {
         EditText edtName;
         Button btnSave, btnCancel, btnDelete;
         String bgC = "#F8ED8C";
-        if (itemList.size()%2==0){
+        if (itemList.size() % 2 == 0) {
             bgC = "#FAD66B";
         }
 
@@ -268,72 +241,53 @@ public class CustomizeWheelActivity extends AppCompatActivity {
             }
         });
 
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.cancel();
+        btnCancel.setOnClickListener(v -> alertDialog.cancel());
+
+        btnSave.setOnClickListener(v -> {
+            String title = edtName.getText().toString().trim();
+            if (TextUtils.isEmpty(title)) {
+                tvError.setVisibility(View.VISIBLE);
+                return;
             }
+            tvError.setVisibility(View.INVISIBLE);
+            item.title = title;
+            itemList.add(item);
+            database.wheelItemDAO().insertItemToDatabase(item);
+            showPreviewWheel(itemList);
+            adapter.notifyDataSetChanged();
+            alertDialog.cancel();
         });
 
-        btnSave.setOnClickListener(new View.OnClickListener() {
+        cvSetBgColor.setOnClickListener(v -> chooseColor(new OnChangeColor() {
             @Override
-            public void onClick(View v) {
-                String title = edtName.getText().toString().trim();
-                if (TextUtils.isEmpty(title)){
-                    tvError.setVisibility(View.VISIBLE);
-                    return;
-                }
-                tvError.setVisibility(View.INVISIBLE);
-                item.title = title;
-                itemList.add(item);
-                database.wheelItemDAO().insertItemToDatabase(item);
-                showPreviewWheel(itemList);
-                adapter.notifyDataSetChanged();
-                alertDialog.cancel();
+            public void setBackgroundColor(int color) {
+                String col = Utils.formatColorToHex(color);
+                cvSetBgColor.setBackgroundColor(Color.parseColor(col));
+                cvBgPre.setBackgroundColor(Color.parseColor(col));
+                item.backgroundColor = Color.parseColor(col);
             }
-        });
 
-        cvSetBgColor.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                chooseColor(new OnChangeColor() {
-                    @Override
-                    public void setBackgroundColor(int color) {
-                        String col = "#" + Integer.toHexString(color);
-                        cvSetBgColor.setBackgroundColor(Color.parseColor(col));
-                        cvBgPre.setBackgroundColor(Color.parseColor(col));
-                        item.backgroundColor = Color.parseColor(col);
-                    }
-
-                    @Override
-                    public void setTextColor(int color) {
-
-                    }
-                });
+            public void setTextColor(int color) {
 
             }
-        });
+        }));
 
-        cvSetTextColor.setOnClickListener(new View.OnClickListener() {
+        cvSetTextColor.setOnClickListener(v -> chooseColor(new OnChangeColor() {
             @Override
-            public void onClick(View v) {
-                chooseColor(new OnChangeColor() {
-                    @Override
-                    public void setBackgroundColor(int color) {
-                        String col = "#" + Integer.toHexString(color);
-                        cvSetTextColor.setBackgroundColor(Color.parseColor(col));
+            public void setBackgroundColor(int color) {
+                String col = Utils.formatColorToHex(color);
+                cvSetTextColor.setBackgroundColor(Color.parseColor(col));
 
-                    }
-
-                    @Override
-                    public void setTextColor(int color) {
-                        String col = "#" + Integer.toHexString(color);
-                        tvNamePre.setTextColor(Color.parseColor(col));
-                        item.textColor = Color.parseColor(col);
-                    }
-                });
             }
-        });
+
+            @Override
+            public void setTextColor(int color) {
+                String col = Utils.formatColorToHex(color);
+                tvNamePre.setTextColor(Color.parseColor(col));
+                item.textColor = Color.parseColor(col);
+            }
+        }));
 
         alertDialog.show();
     }
@@ -395,95 +349,73 @@ public class CustomizeWheelActivity extends AppCompatActivity {
 
 
         // btn on click listener
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.cancel();
+        btnCancel.setOnClickListener(v -> alertDialog.cancel());
+
+        btnSave.setOnClickListener(v -> {
+            String title = edtName.getText().toString().trim();
+            if (TextUtils.isEmpty(title)) {
+                tvError.setVisibility(View.VISIBLE);
+                return;
             }
+            tvError.setVisibility(View.INVISIBLE);
+            item.title = title;
+            database.wheelItemDAO().updateItem(item);
+            showPreviewWheel(itemList);
+            adapter.notifyDataSetChanged();
+
+            alertDialog.cancel();
         });
 
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String title = edtName.getText().toString().trim();
-                if (TextUtils.isEmpty(title)){
-                    tvError.setVisibility(View.VISIBLE);
-                    return;
-                }
-                tvError.setVisibility(View.INVISIBLE);
-                item.title = title;
-                database.wheelItemDAO().updateItem(item);
-                showPreviewWheel(itemList);
-                adapter.notifyDataSetChanged();
+        btnDelete.setOnClickListener(v -> {
+            itemList.remove(item);
+            database.wheelItemDAO().deleteItemInDatabase(item);
+            showPreviewWheel(itemList);
+            adapter.notifyDataSetChanged();
 
-                alertDialog.cancel();
-            }
-        });
-
-        btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                itemList.remove(item);
-                database.wheelItemDAO().deleteItemInDatabase(item);
-                showPreviewWheel(itemList);
-                adapter.notifyDataSetChanged();
-
-                alertDialog.cancel();
-            }
+            alertDialog.cancel();
         });
 
         //..........
 
-        cvSetBgColor.setOnClickListener(new View.OnClickListener() {
+        cvSetBgColor.setOnClickListener(v -> chooseColor(new OnChangeColor() {
             @Override
-            public void onClick(View v) {
-                chooseColor(new OnChangeColor() {
-                    @Override
-                    public void setBackgroundColor(int color) {
-                        String col = "#" + Integer.toHexString(color);
-                        cvSetBgColor.setBackgroundColor(Color.parseColor(col));
-                        cvBgPre.setBackgroundColor(Color.parseColor(col));
-                        item.backgroundColor = Color.parseColor(col);
-                    }
+            public void setBackgroundColor(int color) {
+                String col = Utils.formatColorToHex(color);
+                cvSetBgColor.setBackgroundColor(Color.parseColor(col));
+                cvBgPre.setBackgroundColor(Color.parseColor(col));
+                item.backgroundColor = Color.parseColor(col);
+            }
 
-                    @Override
-                    public void setTextColor(int color) {
-
-                    }
-                });
+            @Override
+            public void setTextColor(int color) {
 
             }
-        });
+        }));
 
-        cvSetTextColor.setOnClickListener(new View.OnClickListener() {
+        cvSetTextColor.setOnClickListener(v -> chooseColor(new OnChangeColor() {
             @Override
-            public void onClick(View v) {
-                chooseColor(new OnChangeColor() {
-                    @Override
-                    public void setBackgroundColor(int color) {
-                        String col = "#" + Integer.toHexString(color);
-                        cvSetTextColor.setBackgroundColor(Color.parseColor(col));
+            public void setBackgroundColor(int color) {
+                String col = Utils.formatColorToHex(color);
+                cvSetTextColor.setBackgroundColor(Color.parseColor(col));
 
-                    }
-
-                    @Override
-                    public void setTextColor(int color) {
-                        String col = "#" + Integer.toHexString(color);
-                        tvNamePre.setTextColor(Color.parseColor(col));
-                        item.textColor = Color.parseColor(col);
-                    }
-                });
             }
-        });
+
+            @Override
+            public void setTextColor(int color) {
+                String col = Utils.formatColorToHex(color);
+                tvNamePre.setTextColor(Color.parseColor(col));
+                item.textColor = Color.parseColor(col);
+            }
+        }));
 
         alertDialog.show();
     }
 
     private void saveWheelIntoDatabase(Wheel wheel) {
         String wheelTitle = edtWheelTitle.getText().toString().trim();
-        if (wheelTitle.isEmpty()){
-            wheel.title = "U-Spin";
-        }else  wheel.title = wheelTitle;
+        if (wheelTitle.isEmpty()) {
+            wheel.title = getString(R.string.default_spin_name);
+        } else wheel.title = wheelTitle;
         wheel.round = (int) sliderRound.getValue();
         database.wheelDAO().updateWheel(wheel);
     }
@@ -491,28 +423,19 @@ public class CustomizeWheelActivity extends AppCompatActivity {
     private void askToDeleteItem(Wheel wheel) {
         AlertDialog.Builder builder = new AlertDialog.Builder(CustomizeWheelActivity.this);
         builder.setCancelable(true);
-        builder.setTitle("Xóa vòng quay");
-        builder.setMessage("Bạn có muốn tiếp tục xóa vòng quay này không?");
+        builder.setTitle(getString(R.string.str_remove_spin));
+        builder.setMessage(getString(R.string.toast_message_remove_spin));
 
 
-        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
+        builder.setNegativeButton(getString(R.string.str_cancel), (dialog, which) -> dialog.cancel());
+
+        builder.setPositiveButton(getString(R.string.str_delete), (dialog, which) -> {
+            database.wheelItemDAO().deleteAllItemInDatabase(wheel.id);
+            database.wheelDAO().deleteWheelInDatabase(wheel);
+            startActivity(new Intent(CustomizeWheelActivity.this, HomeActivity.class));
+            CustomizeWheelActivity.this.finish();
+            Toast.makeText(CustomizeWheelActivity.this, getString(R.string.toast_remove_successful), Toast.LENGTH_SHORT).show();
         });
-
-        builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                database.wheelItemDAO().deleteAllItemInDatabase(wheel.id);
-                database.wheelDAO().deleteWheelInDatabase(wheel);
-                startActivity(new Intent(CustomizeWheelActivity.this, HomeActivity.class));
-                CustomizeWheelActivity.this.finish();
-                Toast.makeText(CustomizeWheelActivity.this, "Xóa thành công!", Toast.LENGTH_SHORT).show();
-            }
-        });
-
 
         builder.show();
     }
@@ -520,6 +443,5 @@ public class CustomizeWheelActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
     }
 }

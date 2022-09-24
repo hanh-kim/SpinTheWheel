@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 
 import vn.fmobile.spinthewheel.R;
@@ -16,21 +18,20 @@ public class SplashScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash_screen);
         Intent  intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(3000);
-                    startActivity(intent);
-                    finish();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+//        new Thread(() -> {
+//            try {
+//                Thread.sleep(3000);
+//                startActivity(intent);
+//                finish();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }).start();
 
-        }).start();
-
-
+       new Handler(Looper.getMainLooper()).postDelayed(()->{
+           startActivity(intent);
+           finish();
+       },3000);
 
     }
     private void loadData() {

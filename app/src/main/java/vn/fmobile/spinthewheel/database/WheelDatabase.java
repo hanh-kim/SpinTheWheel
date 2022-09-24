@@ -1,6 +1,5 @@
 package vn.fmobile.spinthewheel.database;
 
-
 import android.content.Context;
 
 import androidx.room.Database;
@@ -13,7 +12,7 @@ import vn.fmobile.spinthewheel.model.Wheel;
 
 @Database(entities = {Item.class, Wheel.class, History.class}, version = 1)
 public abstract class WheelDatabase extends RoomDatabase {
-    private static final String DATABASE_NAME = "lucky_wheel.db";
+    private static final String DATABASE_NAME = "u_spin_wheel.db";
     private static WheelDatabase instance;
 
     public static synchronized WheelDatabase getInstance(Context context) {

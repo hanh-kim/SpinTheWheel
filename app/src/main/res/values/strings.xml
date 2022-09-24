@@ -1,3 +1,33 @@
 <resources>
     <string name="app_name">U-Spin</string>
+    <string name="default_spin_name">U-Spin</string>
+
+    <string name="str_history">Lịch sử</string>
+    <string name="str_spin">Vòng quay</string>
+    <string name="str_new_spin">Vòng quay mới</string>
+    <string name="str_edit">Chỉnh sửa</string>
+    <string name="str_select_color">Chọn màu</string>
+    <string name="str_remove_spin">Xóa vòng quay</string>
+    <string name="str_remove_history">Xóa lịch sử</string>
+    <string name="str_cancel">Hủy</string>
+    <string name="str_delete">Xóa</string>
+    <string name="str_select">Chọn</string>
+    <string name="str_preview">Xem trước</string>
+    <string name="str_list_item">Các mục</string>
+    <string name="str_spin_times">Số vòng quay</string>
+
+    <!--Format message -->
+    <string name="format_count_spin_times">{0}x</string>
+    <string name="format_hex_string_color">#{0}</string>
+
+    <!--Toast message -->
+    <string name="toast_spin_empty">Vòng quay trống! Hãy thêm các ô cho vòng quay.</string>
+    <string name="toast_spin_minimum_two_item">Vòng quay cần ít nhất 2 ô để quay</string>
+    <string name="toast_add_one_cell_to_continue">Vòng quay cần ít nhất 2 ô để quay</string>
+    <string name="toast_no_select_colors">Bạn chưa chọn màu</string>
+    <string name="toast_message_remove_spin">Bạn có muốn tiếp tục xóa vòng quay này không?</string>
+    <string name="toast_remove_successful">Xóa thành công!</string>
+    <string name="toast_remove_all_history">Bạn có muốn tiếp tục xóa toàn bộ lịch sử quay không?</string>
+    <string name="toast_remove_from_history">Bạn có muốn tiếp tục xóa mục này khỏi lịch sử quay không?</string>
+
 </resources>

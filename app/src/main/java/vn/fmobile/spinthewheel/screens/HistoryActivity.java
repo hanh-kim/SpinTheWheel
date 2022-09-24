@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,17 +13,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import vn.fmobile.spinthewheel.database.WheelDatabase;
 import vn.fmobile.spinthewheel.model.Wheel;
 import vn.fmobile.spinthewheel.R;
 import vn.fmobile.spinthewheel.adapter.HistoryAdapter;
 import vn.fmobile.spinthewheel.model.History;
 import vn.fmobile.spinthewheel.others.Memory;
-import vn.fmobile.spinthewheel.others.OnItemClickListener;
 
 public class HistoryActivity extends AppCompatActivity {
 
@@ -44,19 +40,11 @@ public class HistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_history);
         initUI();
 
-        //Toast.makeText(this, "wheel id home:"+ Memory.wheelId , Toast.LENGTH_SHORT).show();
         historyList = database.historyDAO().getHistoryFromDatabase(wheelId);
         checkListIsEmpty();
-        adapter.setData(historyList, new OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                askToDeleteItem(historyList.get(position));
-            }
-        });
+        adapter.setData(historyList, (view, position) -> askToDeleteItem(historyList.get(position)));
         rcvHistory.setLayoutManager(linearLayoutManager);
         rcvHistory.setAdapter(adapter);
-
-
     }
 
     private void initUI() {
@@ -91,28 +79,24 @@ public class HistoryActivity extends AppCompatActivity {
     private void askToDeleteAll() {
         AlertDialog.Builder builder = new AlertDialog.Builder(HistoryActivity.this);
         builder.setCancelable(true);
-        builder.setTitle("Xóa lịch sử");
-        builder.setMessage("Bạn có muốn tiếp tục xóa toàn bộ lịch sử quay không?");
+        builder.setTitle(getString(R.string.str_remove_history));
+        builder.setMessage(getString(R.string.toast_remove_all_history));
 
 
-        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.str_cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }
         });
 
-        builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                database.historyDAO().deleteAll(wheelId);
-                historyList.clear();
-                adapter.notifyDataSetChanged();
-                Toast.makeText(HistoryActivity.this, "Xóa thành công!", Toast.LENGTH_SHORT).show();
-                checkListIsEmpty();
-            }
+        builder.setPositiveButton(getString(R.string.str_delete), (dialog, which) -> {
+            database.historyDAO().deleteAll(wheelId);
+            historyList.clear();
+            adapter.notifyDataSetChanged();
+            Toast.makeText(HistoryActivity.this, getString(R.string.toast_remove_successful), Toast.LENGTH_SHORT).show();
+            checkListIsEmpty();
         });
-
 
         builder.show();
     }
@@ -120,28 +104,19 @@ public class HistoryActivity extends AppCompatActivity {
     private void askToDeleteItem(History history) {
         AlertDialog.Builder builder = new AlertDialog.Builder(HistoryActivity.this);
         builder.setCancelable(true);
-        builder.setTitle("Xóa lịch sử");
-        builder.setMessage("Bạn có muốn tiếp tục xóa mục này khỏi lịch sử quay không?");
+        builder.setTitle(getString(R.string.str_remove_history));
+        builder.setMessage(getString(R.string.toast_remove_from_history));
 
 
-        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
+        builder.setNegativeButton(getString(R.string.str_cancel), (dialog, which) -> dialog.cancel());
+
+        builder.setPositiveButton(getString(R.string.str_delete), (dialog, which) -> {
+            database.historyDAO().deleteHistoryItem(history);
+            historyList.remove(history);
+            adapter.notifyDataSetChanged();
+            Toast.makeText(HistoryActivity.this, getString(R.string.toast_remove_successful), Toast.LENGTH_SHORT).show();
+            checkListIsEmpty();
         });
-
-        builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                database.historyDAO().deleteHistoryItem(history);
-                historyList.remove(history);
-                adapter.notifyDataSetChanged();
-                Toast.makeText(HistoryActivity.this, "Xóa thành công!", Toast.LENGTH_SHORT).show();
-                checkListIsEmpty();
-            }
-        });
-
 
         builder.show();
     }
